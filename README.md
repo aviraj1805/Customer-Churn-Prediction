@@ -83,7 +83,7 @@ customer-churn-kaggle/
 
 | Model | Mean CV AUC |
 |---|---|
-| ✅ XGBoost | **0.9157** |
+| XGBoost | **0.9157** |
 | LightGBM | 0.9156 |
 
 ---
