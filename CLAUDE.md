@@ -21,7 +21,8 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 
 ## Commands (Windows, run from repo root)
 - Setup: `python -m venv .venv` then `.venv\Scripts\python -m pip install -r requirements.txt`
-- Train: `.venv\Scripts\python -m src.train` (`--quick` for a fast smoke run)
+- Train: `.venv\Scripts\python -m src.train` (~15-20 min; `--quick` = 3-min smoke run into .quick_run/)
+- Predict: `.venv\Scripts\python -m src.predict` (Kaggle submission) or `--input x.csv --output y.csv`
 - Test: `.venv\Scripts\python -m pytest`
 - App: `.venv\Scripts\python app/app.py`
 - Deploy: `.venv\Scripts\python scripts/deploy_space.py`
@@ -44,7 +45,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 4: model registry + grids
 - [x] Task 5: training entry point (`--quick` writes to .quick_run/, ~3 min)
 - [x] Task 6: evaluation + full training run (best: tuned XGBoost, test AUC 0.9165; reruns reproduce exactly)
-- [ ] Task 7: predict module + tests
+- [x] Task 7: predict module + tests
 - [ ] Task 8: cleaned EDA notebook
 - [ ] Task 9: Gradio app
 - [ ] Task 10: deploy to Hugging Face Spaces
