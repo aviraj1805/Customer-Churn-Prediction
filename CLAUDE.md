@@ -14,7 +14,8 @@ src/                 config, data, features, preprocessing, models, train, evalu
 models/              best_model.joblib + metadata.json (only these are tracked)
 reports/             model comparison table; figures/ for all plots
 submissions/         Kaggle submission files
-app/                 Gradio app + its pinned inference requirements (deployed via render.yaml)
+app/                 Gradio app: app.py (layout, handlers, JSON API), components.py (HTML), artifacts.py,
+                     theme.py (CSS), assets/ (sample CSV), requirements.txt (pinned inference deps)
 scripts/             feature_ablation.py (parity check vs original notebook)
 tests/               pytest suite (uses synthetic data, no Kaggle download needed)
 ```
@@ -38,6 +39,12 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - Commits: conventional commit messages, one per completed task, author = repo-local git identity.
   No co-author trailers and no mention of Claude in commit messages.
 - Workflow: one task at a time -> implement -> run/test -> verify -> commit.
+- App data: the Performance/Insights tabs read small tables written by `src.train` (reports/threshold_analysis.csv,
+  curves.csv, segment_churn_rates.csv); retraining regenerates them. The app never needs data/raw.
+- Gradio CSS gotcha: `css=` is scoped by Gradio to elements inside `.contain`, so selectors for outer containers
+  (`.gradio-container`, `main`, `.wrap`) must go in the unscoped `HEAD` <style> in app/theme.py.
+- Visual checks: run the app and screenshot with headless Edge (Chrome DevTools protocol); Gradio renders hidden
+  duplicate tab buttons, so click `[role=tab]` elements.
 
 ## Status
 - [x] Task 0: setup (branch `refactor/ml-pipeline`, .gitignore, .venv, attribution settings)
@@ -49,7 +56,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 6: evaluation + full training run (best: tuned XGBoost, test AUC 0.9165; reruns reproduce exactly)
 - [x] Task 7: predict module + tests
 - [x] Task 8: cleaned EDA notebook (executed with outputs; figures in reports/figures/eda_*.png)
-- [x] Task 9: Gradio app (app/app.py; screenshot in reports/figures/app_screenshot.png)
+- [x] Task 9: Gradio app (first version; redesigned in Tasks 15-18, screenshots in reports/figures/app_*.png)
 - [~] Task 10: deploy (HF free Gradio Spaces now need PRO -> switched to Render free; render.yaml ready, live URL pending)
 - [x] Task 11: README + docs
 - [x] Task 12: final verification, merge to main, push
@@ -59,4 +66,4 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
   - [x] Task 15+16: app restructure (theme, components, artifacts), live Predict tab, Batch scoring tab
   - [x] Task 17: Model performance tab (threshold explorer)
   - [x] Task 18: Data insights + About/API tabs, JSON API
-  - [ ] Task 19: polish, memory check, screenshots, docs, merge + push
+  - [x] Task 19: polish (phone layout, dark mode), memory/latency check, screenshots, docs, merge + push

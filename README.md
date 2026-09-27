@@ -12,11 +12,28 @@ contact first. Built on the 594,000-customer Kaggle Playground S6E3 dataset as a
 one scikit-learn pipeline from raw data to prediction, five tuned and compared models, an honest hold-out
 evaluation, automated tests, and a live web demo.
 
-**[Try the live demo](https://churn-predictor-aviraj.onrender.com)**: enter a customer's contract, services and
-charges and get their churn probability.
+**[Try the live demo](https://churn-predictor-aviraj.onrender.com)**
 
 <p align="center">
-  <img src="reports/figures/app_screenshot.png" width="85%" alt="Screenshot of the churn prediction web app">
+  <img src="reports/figures/app_predict.png" width="90%" alt="Predict tab: live churn gauge, risk tier and SHAP drivers">
+</p>
+
+The web app has five tabs:
+
+- **Predict:** results update live as you change any input. An animated risk gauge and risk tier, **why** the
+  model decided (per-customer SHAP contributions), **what would reduce the risk** (the model re-scores the
+  customer after each retention action, e.g. a two-year contract takes a new fiber customer from 86% to 31%),
+  and how risk changes with tenure.
+- **Batch scoring:** upload a CSV of customers and get summary cards, a risk-tier chart, the highest-risk
+  customers and a downloadable scored file (validated input, up to 50,000 rows, about 1 second).
+- **Model performance:** a threshold slider that shows, live, how precision, recall, the confusion matrix and
+  "per 10,000 customers" campaign numbers change, plus the model comparison, ROC / PR curves and feature importance.
+- **Data insights:** churn rate for any customer segment and by tenure, with key findings.
+- **About & API:** how the system works, a model card (intended use, limitations, fairness check) and a JSON API.
+
+<p align="center">
+  <img src="reports/figures/app_performance.png" width="49%" alt="Model performance tab with threshold explorer">
+  <img src="reports/figures/app_batch.png" width="49%" alt="Batch scoring tab">
 </p>
 
 ---
@@ -97,6 +114,9 @@ From [`notebooks/02_eda.ipynb`](notebooks/02_eda.ipynb):
   than four years of tenure. Churners have been customers for 17 months on average, vs 42 months for
   customers who stay.
 - **Churners pay about $20 more per month** on average ($81.60 vs $61.29).
+- **Senior citizens churn at 50%** vs 19% for other customers, a segment the original notebook did not look at.
+  The model barely relies on this column, because seniors are far more often on month-to-month contracts (78% vs
+  47%), fiber (86% vs 41%) and electronic check (70% vs 32%), so those columns already carry the signal.
 
 <p align="center">
   <img src="reports/figures/eda_churn_by_category.png" width="80%" alt="Churn rate by segment">
@@ -142,13 +162,33 @@ preprocessing as training. [`app/requirements.txt`](app/requirements.txt) pins t
 was trained with, and a test fails if they drift apart. An uptime monitor pings the app every 5 minutes, so
 the free instance does not go to sleep.
 
-The app also exposes an API endpoint (`/predict`), usable from Python with `gradio_client`.
+Engineering details:
+
+- **Explanations without extra libraries:** XGBoost's built-in exact SHAP values (`pred_contribs`), summed from
+  one-hot columns back to the original fields. A test checks that they add up to the predicted probability.
+- **No raw data on the server:** training writes small report tables (threshold analysis, curve points, segment
+  churn rates, about 60 KB in total) that power the performance and insights tabs.
+- **JSON API** at `/predict` (probability, decision, risk tier, top drivers), with Python and cURL examples on
+  the About tab. UI events are hidden from the API.
+- **Tested and measured:** the event handlers, HTML components, batch validation and API have unit tests.
+  About 9 ms per prediction, a median of 133 ms per API round trip, about 355 MB of memory (free instance: 512 MB).
+- **Works on phones and in dark mode:** responsive layout, and colors defined as CSS variables.
+
+```python
+from gradio_client import Client
+client = Client("https://churn-predictor-aviraj.onrender.com/")
+result = client.predict(customer={...19 input fields...}, api_name="/predict")
+```
 
 ## Project structure
 
 ```
 ├── app/
-│   ├── app.py                  Gradio demo
+│   ├── app.py                  Gradio app: layout, event handlers, JSON API
+│   ├── components.py           HTML building blocks (gauge, driver bars, cards, confusion matrix)
+│   ├── artifacts.py            loads the model and report tables once at startup
+│   ├── theme.py                theme and CSS (light/dark, responsive)
+│   ├── assets/                 sample CSV for batch scoring
 │   └── requirements.txt        pinned inference dependencies for deployment
 ├── config.yaml                 paths, seed, split, CV and hyperparameter grids
 ├── data/                       raw Kaggle CSVs (not committed; see data/README.md)
@@ -157,7 +197,7 @@ The app also exposes an API endpoint (`/predict`), usable from Python with `grad
 │   ├── 01_original_colab_notebook.ipynb   the original analysis, unchanged
 │   └── 02_eda.ipynb                       cleaned exploratory analysis
 ├── render.yaml                 Render deployment config
-├── reports/                    model comparison, tuning results, experiments log
+├── reports/                    model comparison, tuning results, experiments log, app tables
 │   └── figures/                all plots
 ├── scripts/feature_ablation.py parity check vs the notebook + engineered-feature ablation
 ├── src/
@@ -169,6 +209,7 @@ The app also exposes an API endpoint (`/predict`), usable from Python with `grad
 │   ├── train.py                tuning, evaluation, model selection   (python -m src.train)
 │   ├── evaluate.py             metrics, threshold, report figures
 │   ├── predict.py              single-customer and batch prediction  (python -m src.predict)
+│   ├── explain.py              SHAP drivers, retention what-ifs, tenure outlook
 │   └── plot_style.py           shared chart style
 ├── submissions/                Kaggle submission files
 └── tests/                      pytest suite (runs on synthetic data, no download needed)

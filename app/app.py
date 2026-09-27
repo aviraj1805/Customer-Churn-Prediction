@@ -19,7 +19,7 @@ import pandas as pd  # noqa: E402
 
 from app import components as ui  # noqa: E402
 from app.artifacts import load_artifacts  # noqa: E402
-from app.theme import CSS, THEME  # noqa: E402
+from app.theme import CSS, HEAD, THEME  # noqa: E402
 from src.data import load_raw  # noqa: E402
 from src.explain import drivers, retention_scenarios, tenure_outlook  # noqa: E402
 from src.features import CATEGORY_LEVELS, INTERNET_ADDONS, RAW_FEATURES  # noqa: E402
@@ -520,7 +520,7 @@ def predict_api(customer: dict) -> dict:
 
 
 # --- App ---------------------------------------------------------------------------------------------
-with gr.Blocks(title="Customer Churn Predictor", theme=THEME, css=CSS) as demo:
+with gr.Blocks(title="Customer Churn Predictor", theme=THEME, css=CSS, head=HEAD) as demo:
     gr.HTML(ui.header_html(ART.metadata))
     with gr.Tabs():
         with gr.Tab("Predict"):

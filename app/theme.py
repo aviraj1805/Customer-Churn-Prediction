@@ -17,13 +17,21 @@ THEME = gr.themes.Soft(
     button_primary_background_fill_hover="linear-gradient(90deg, *primary_500, *secondary_500)",
 )
 
+# Gradio scopes `css` to elements inside its content area, so rules for the outer page containers go into
+# an unscoped <style> tag in the page head instead.
+HEAD = """<style>
+gradio-app .gradio-container { max-width: 1320px !important; margin: 0 auto !important; }
+@media (max-width: 700px) {  /* phones: let the page shrink to the screen instead of scrolling sideways */
+  gradio-app .gradio-container, gradio-app main, gradio-app .wrap, gradio-app .contain { min-width: 0 !important; max-width: 100% !important; }
+}
+</style>"""
+
 CSS = """
 :root {
   --risk-low: #0ca30c; --risk-moderate: #fab219; --risk-high: #ec835a; --risk-very-high: #d03b3b;
   --pushes-up: #e34948; --pushes-down: #2a78d6;
 }
 .dark { --pushes-up: #e66767; --pushes-down: #3987e5; }
-.gradio-container { max-width: 1320px !important; margin: 0 auto !important; }
 
 /* Header */
 .hero { background: linear-gradient(120deg, #312e81 0%, #4338ca 48%, #0369a1 100%); color: #fff;
@@ -33,7 +41,8 @@ CSS = """
 .hero p { color: rgba(255,255,255,.86) !important; margin: 0; font-size: 15px; max-width: 560px; }
 .hero .links { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.8); }
 .hero .links a { color: #fff !important; text-decoration: underline; text-underline-offset: 3px; }
-.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.hero > div { flex: 1 1 300px; min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
 .chip { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.24); border-radius: 12px;
   padding: 8px 14px; min-width: 104px; }
 .chip .v { font-size: 20px; font-weight: 700; color: #fff; }
@@ -104,8 +113,18 @@ CSS = """
 
 @media (max-width: 900px) {
   .sticky-col { position: static; }
+  .chips { justify-content: flex-start; }
+  .chip { flex: 1 1 110px; min-width: 0; }
   .hero { padding: 18px; }
   .hero h1 { font-size: 22px; }
   .bar-row { grid-template-columns: minmax(96px, 40%) 1fr 48px; }
+}
+@media (max-width: 700px) {  /* phones: wrap form rows and stack side-by-side panels */
+  .form, .row { flex-wrap: wrap !important; min-width: 0 !important; }
+  .tabs, .tabitem { min-width: 0 !important; }
+  .form > *, .row > * { min-width: min(140px, 100%) !important; flex: 1 1 140px !important; }
+  .row > .column { flex: 1 1 100% !important; }  /* stack side-by-side panels */
+  .scenario { grid-template-columns: 1fr auto; }
+  .scenario .p { grid-column: 1; }
 }
 """
