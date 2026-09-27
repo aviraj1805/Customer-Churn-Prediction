@@ -137,11 +137,19 @@ def main(argv=None) -> None:
     importances.to_csv(reports_dir / "feature_importance.csv", index=False)
     evaluate.plot_feature_importance(importances, DISPLAY_NAMES[best_name], figures_dir / "feature_importance.png")
 
+    # Small tables for the web app (threshold explorer, interactive curves, segment insights)
+    evaluate.threshold_table(y_test, test_probas[best_name]).to_csv(
+        reports_dir / "threshold_analysis.csv", index=False, float_format="%.6g")
+    evaluate.curve_points(y_test, test_probas).to_csv(reports_dir / "curves.csv", index=False, float_format="%.6g")
+    evaluate.segment_churn_rates(X, y).to_csv(
+        reports_dir / "segment_churn_rates.csv", index=False, float_format="%.6g")
+
     print("\n" + table.to_string(index=False, float_format=lambda v: f"{v:.4f}"))
-    save_model(best_name, best_pipeline, results[best_name], cfg, n_train=len(X_train), n_test=len(X_test))
+    save_model(best_name, best_pipeline, results[best_name], cfg,
+               n_train=len(X_train), n_test=len(X_test), churn_rate=float(y.mean()))
 
 
-def save_model(name: str, pipeline, result: dict, cfg: dict, n_train: int, n_test: int) -> None:
+def save_model(name: str, pipeline, result: dict, cfg: dict, n_train: int, n_test: int, churn_rate: float) -> None:
     """Save the fitted pipeline plus the metadata the app and README need."""
     model_path = resolve_path(cfg["paths"]["model"])
     model_path.parent.mkdir(parents=True, exist_ok=True)
@@ -157,6 +165,7 @@ def save_model(name: str, pipeline, result: dict, cfg: dict, n_train: int, n_tes
         "test_metrics": result["test_metrics"],
         "n_train_rows": n_train,
         "n_test_rows": n_test,
+        "churn_rate": churn_rate,
         "features": RAW_FEATURES,
         "engineered_features": cfg["features"]["engineered"],
         "trained_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

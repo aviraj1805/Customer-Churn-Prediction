@@ -20,6 +20,7 @@ from sklearn.metrics import (
     roc_curve,
 )
 
+from src.features import CATEGORICAL_FEATURES
 from src.models import DISPLAY_NAMES
 from src.plot_style import BLUES, CATEGORICAL, GRID, HIGHLIGHT, INK, INK_SECONDARY, MUTED, SURFACE, apply_style
 
@@ -101,6 +102,59 @@ def write_grid_results(model_name: str, cv_results: dict, reports_dir: Path) -> 
     table["cv_roc_auc_std"] = cv_results["std_test_score"]
     table["rank"] = cv_results["rank_test_score"]
     table.sort_values("rank").to_csv(out_dir / f"{model_name}_grid.csv", index=False)
+
+
+# --- Data for the web app: small tables, so the app never needs the raw data ----------------------
+def threshold_table(y_true, proba, step: float = 0.01) -> pd.DataFrame:
+    """Confusion counts and metrics at every cut-off from ``step`` to ``1 - step`` (threshold explorer)."""
+    y_true, proba = np.asarray(y_true), np.asarray(proba)
+    rows = []
+    for threshold in np.round(np.arange(step, 1, step), 4):
+        flagged = proba >= threshold
+        tp = int(np.sum(flagged & (y_true == 1)))
+        fp = int(np.sum(flagged & (y_true == 0)))
+        fn = int(np.sum(~flagged & (y_true == 1)))
+        tn = int(np.sum(~flagged & (y_true == 0)))
+        precision = tp / (tp + fp) if tp + fp else 0.0
+        recall = tp / (tp + fn) if tp + fn else 0.0
+        rows.append({
+            "threshold": threshold, "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+            "precision": precision, "recall": recall,
+            "f1": 2 * precision * recall / (precision + recall) if precision + recall else 0.0,
+            "accuracy": (tp + tn) / len(y_true), "flagged_rate": (tp + fp) / len(y_true),
+        })
+    return pd.DataFrame(rows)
+
+
+def curve_points(y_true, probas: dict, n_points: int = 101) -> pd.DataFrame:
+    """ROC and precision-recall curves resampled on a fixed grid (long format: model, curve, x, y)."""
+    grid = np.linspace(0, 1, n_points)
+    frames = []
+    for name, proba in probas.items():
+        fpr, tpr, _ = roc_curve(y_true, proba)
+        precision, recall, _ = precision_recall_curve(y_true, proba)
+        order = np.argsort(recall, kind="stable")  # recall comes out decreasing
+        label = DISPLAY_NAMES[name]
+        frames.append(pd.DataFrame({"model": label, "curve": "roc", "x": grid, "y": np.interp(grid, fpr, tpr)}))
+        frames.append(pd.DataFrame({"model": label, "curve": "pr", "x": grid,
+                                    "y": np.interp(grid, recall[order], precision[order])}))
+    return pd.concat(frames, ignore_index=True)
+
+
+def segment_churn_rates(X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
+    """Customers and churn rate for every level of every categorical column, plus 6-month tenure bands."""
+    bands = range(0, 72, 6)
+    df = X.assign(
+        churn=y.to_numpy(),
+        SeniorCitizen=X["SeniorCitizen"].map({0: "No", 1: "Yes"}),
+        TenureBand=pd.cut(X["tenure"], bins=[*bands, 72], labels=[f"{b + 1}-{b + 6}" for b in bands]),
+    )
+    frames = []
+    for col in ["SeniorCitizen", *CATEGORICAL_FEATURES, "TenureBand"]:
+        rates = df.groupby(col, observed=True)["churn"].agg(customers="size", churn_rate="mean").reset_index()
+        frames.append(rates.rename(columns={col: "level"}).assign(feature=col))
+    table = pd.concat(frames, ignore_index=True)[["feature", "level", "customers", "churn_rate"]]
+    return table.astype({"level": str})
 
 
 # --- Figures ---------------------------------------------------------------------------------------

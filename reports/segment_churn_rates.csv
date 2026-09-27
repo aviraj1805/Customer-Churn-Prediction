@@ -1,0 +1,56 @@
+feature,level,customers,churn_rate
+SeniorCitizen,No,526395,0.189774
+SeniorCitizen,Yes,67799,0.500317
+gender,Female,298738,0.228036
+gender,Male,295456,0.222348
+Partner,No,284640,0.324621
+Partner,Yes,309554,0.133796
+Dependents,No,414362,0.291354
+Dependents,Yes,179832,0.0727957
+PhoneService,No,36301,0.16815
+PhoneService,Yes,557893,0.22892
+MultipleLines,No,283384,0.182322
+MultipleLines,No phone service,36301,0.16815
+MultipleLines,Yes,274509,0.277026
+InternetService,DSL,181081,0.103064
+InternetService,Fiber optic,272386,0.415366
+InternetService,No,140727,0.0143114
+OnlineSecurity,No,289474,0.406133
+OnlineSecurity,No internet service,140727,0.0143114
+OnlineSecurity,Yes,163993,0.0868208
+OnlineBackup,No,250083,0.391026
+OnlineBackup,No internet service,140727,0.0143114
+OnlineBackup,Yes,203384,0.16724
+DeviceProtection,No,247377,0.38063
+DeviceProtection,No internet service,140727,0.0143114
+DeviceProtection,Yes,206090,0.182658
+TechSupport,No,288571,0.40162
+TechSupport,No internet service,140727,0.0143114
+TechSupport,Yes,164896,0.0964669
+StreamingTV,No,213166,0.297416
+StreamingTV,No internet service,140727,0.0143114
+StreamingTV,Yes,240301,0.28466
+StreamingMovies,No,212032,0.299299
+StreamingMovies,No internet service,140727,0.0143114
+StreamingMovies,Yes,241435,0.283066
+Contract,Month-to-month,298918,0.420543
+Contract,One year,108333,0.0576279
+Contract,Two year,186943,0.00998165
+PaperlessBilling,No,228615,0.0746058
+PaperlessBilling,Yes,365579,0.319387
+PaymentMethod,Bank transfer (automatic),121360,0.0770929
+PaymentMethod,Credit card (automatic),133705,0.0693317
+PaymentMethod,Electronic check,215372,0.489052
+PaymentMethod,Mailed check,123757,0.0796965
+TenureBand,1-6,86374,0.54352
+TenureBand,7-12,66272,0.429337
+TenureBand,13-18,46948,0.339461
+TenureBand,19-24,39076,0.221287
+TenureBand,25-30,35198,0.218024
+TenureBand,31-36,30977,0.194112
+TenureBand,37-42,29484,0.166361
+TenureBand,43-48,32329,0.100529
+TenureBand,49-54,36451,0.0960742
+TenureBand,55-60,32978,0.0819031
+TenureBand,61-66,42276,0.0565569
+TenureBand,67-72,115831,0.0293358

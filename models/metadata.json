@@ -20,6 +20,7 @@
   },
   "n_train_rows": 475355,
   "n_test_rows": 118839,
+  "churn_rate": 0.225207592133209,
   "features": [
     "SeniorCitizen",
     "tenure",
@@ -42,7 +43,7 @@
     "PaymentMethod"
   ],
   "engineered_features": true,
-  "trained_at": "2026-09-27T07:21:03+00:00",
+  "trained_at": "2026-09-27T08:26:33+00:00",
   "library_versions": {
     "scikit-learn": "1.7.1",
     "xgboost": "3.2.0"

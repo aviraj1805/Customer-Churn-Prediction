@@ -1,0 +1,1213 @@
+model,curve,x,y
+XGBoost (original notebook),roc,0,0.00171879
+XGBoost (original notebook),roc,0.01,0.251504
+XGBoost (original notebook),roc,0.02,0.3514
+XGBoost (original notebook),roc,0.03,0.429772
+XGBoost (original notebook),roc,0.04,0.489669
+XGBoost (original notebook),roc,0.05,0.540896
+XGBoost (original notebook),roc,0.06,0.587154
+XGBoost (original notebook),roc,0.07,0.624556
+XGBoost (original notebook),roc,0.08,0.657363
+XGBoost (original notebook),roc,0.09,0.68591
+XGBoost (original notebook),roc,0.1,0.714344
+XGBoost (original notebook),roc,0.11,0.74106
+XGBoost (original notebook),roc,0.12,0.761387
+XGBoost (original notebook),roc,0.13,0.780406
+XGBoost (original notebook),roc,0.14,0.798752
+XGBoost (original notebook),roc,0.15,0.815977
+XGBoost (original notebook),roc,0.16,0.83055
+XGBoost (original notebook),roc,0.17,0.843366
+XGBoost (original notebook),roc,0.18,0.855734
+XGBoost (original notebook),roc,0.19,0.867466
+XGBoost (original notebook),roc,0.2,0.879049
+XGBoost (original notebook),roc,0.21,0.8894
+XGBoost (original notebook),roc,0.22,0.898816
+XGBoost (original notebook),roc,0.23,0.907634
+XGBoost (original notebook),roc,0.24,0.914359
+XGBoost (original notebook),roc,0.25,0.921085
+XGBoost (original notebook),roc,0.26,0.927213
+XGBoost (original notebook),roc,0.27,0.933453
+XGBoost (original notebook),roc,0.28,0.939282
+XGBoost (original notebook),roc,0.29,0.943579
+XGBoost (original notebook),roc,0.3,0.947876
+XGBoost (original notebook),roc,0.31,0.951612
+XGBoost (original notebook),roc,0.32,0.955498
+XGBoost (original notebook),roc,0.33,0.958637
+XGBoost (original notebook),roc,0.34,0.962112
+XGBoost (original notebook),roc,0.35,0.9654
+XGBoost (original notebook),roc,0.36,0.968053
+XGBoost (original notebook),roc,0.37,0.970482
+XGBoost (original notebook),roc,0.38,0.97235
+XGBoost (original notebook),roc,0.39,0.97377
+XGBoost (original notebook),roc,0.4,0.975862
+XGBoost (original notebook),roc,0.41,0.977805
+XGBoost (original notebook),roc,0.42,0.979076
+XGBoost (original notebook),roc,0.43,0.98072
+XGBoost (original notebook),roc,0.44,0.982551
+XGBoost (original notebook),roc,0.45,0.98397
+XGBoost (original notebook),roc,0.46,0.984942
+XGBoost (original notebook),roc,0.47,0.985988
+XGBoost (original notebook),roc,0.48,0.986997
+XGBoost (original notebook),roc,0.49,0.987557
+XGBoost (original notebook),roc,0.5,0.988342
+XGBoost (original notebook),roc,0.51,0.989314
+XGBoost (original notebook),roc,0.52,0.990098
+XGBoost (original notebook),roc,0.53,0.990808
+XGBoost (original notebook),roc,0.54,0.991556
+XGBoost (original notebook),roc,0.55,0.992303
+XGBoost (original notebook),roc,0.56,0.992938
+XGBoost (original notebook),roc,0.57,0.993424
+XGBoost (original notebook),roc,0.58,0.993797
+XGBoost (original notebook),roc,0.59,0.994208
+XGBoost (original notebook),roc,0.6,0.994657
+XGBoost (original notebook),roc,0.61,0.994956
+XGBoost (original notebook),roc,0.62,0.995329
+XGBoost (original notebook),roc,0.63,0.995703
+XGBoost (original notebook),roc,0.64,0.995965
+XGBoost (original notebook),roc,0.65,0.996226
+XGBoost (original notebook),roc,0.66,0.99645
+XGBoost (original notebook),roc,0.67,0.996712
+XGBoost (original notebook),roc,0.68,0.996936
+XGBoost (original notebook),roc,0.69,0.997048
+XGBoost (original notebook),roc,0.7,0.997198
+XGBoost (original notebook),roc,0.71,0.997459
+XGBoost (original notebook),roc,0.72,0.997571
+XGBoost (original notebook),roc,0.73,0.997683
+XGBoost (original notebook),roc,0.74,0.997982
+XGBoost (original notebook),roc,0.75,0.998094
+XGBoost (original notebook),roc,0.76,0.998244
+XGBoost (original notebook),roc,0.77,0.99858
+XGBoost (original notebook),roc,0.78,0.998692
+XGBoost (original notebook),roc,0.79,0.998692
+XGBoost (original notebook),roc,0.8,0.998767
+XGBoost (original notebook),roc,0.81,0.999029
+XGBoost (original notebook),roc,0.82,0.999178
+XGBoost (original notebook),roc,0.83,0.999215
+XGBoost (original notebook),roc,0.84,0.999253
+XGBoost (original notebook),roc,0.85,0.99929
+XGBoost (original notebook),roc,0.86,0.999402
+XGBoost (original notebook),roc,0.87,0.999477
+XGBoost (original notebook),roc,0.88,0.999477
+XGBoost (original notebook),roc,0.89,0.999552
+XGBoost (original notebook),roc,0.9,0.999664
+XGBoost (original notebook),roc,0.91,0.999738
+XGBoost (original notebook),roc,0.92,0.999776
+XGBoost (original notebook),roc,0.93,0.999813
+XGBoost (original notebook),roc,0.94,0.999888
+XGBoost (original notebook),roc,0.95,0.999888
+XGBoost (original notebook),roc,0.96,0.999888
+XGBoost (original notebook),roc,0.97,0.999963
+XGBoost (original notebook),roc,0.98,0.999963
+XGBoost (original notebook),roc,0.99,0.999963
+XGBoost (original notebook),roc,1,1
+XGBoost (original notebook),pr,0,1
+XGBoost (original notebook),pr,0.01,0.963981
+XGBoost (original notebook),pr,0.02,0.96572
+XGBoost (original notebook),pr,0.03,0.966301
+XGBoost (original notebook),pr,0.04,0.957086
+XGBoost (original notebook),pr,0.05,0.953676
+XGBoost (original notebook),pr,0.06,0.95198
+XGBoost (original notebook),pr,0.07,0.94454
+XGBoost (original notebook),pr,0.08,0.940273
+XGBoost (original notebook),pr,0.09,0.936981
+XGBoost (original notebook),pr,0.1,0.933387
+XGBoost (original notebook),pr,0.11,0.928119
+XGBoost (original notebook),pr,0.12,0.924573
+XGBoost (original notebook),pr,0.13,0.92306
+XGBoost (original notebook),pr,0.14,0.917744
+XGBoost (original notebook),pr,0.15,0.913112
+XGBoost (original notebook),pr,0.16,0.908907
+XGBoost (original notebook),pr,0.17,0.905287
+XGBoost (original notebook),pr,0.18,0.902066
+XGBoost (original notebook),pr,0.19,0.898568
+XGBoost (original notebook),pr,0.2,0.897114
+XGBoost (original notebook),pr,0.21,0.894054
+XGBoost (original notebook),pr,0.22,0.891039
+XGBoost (original notebook),pr,0.23,0.88664
+XGBoost (original notebook),pr,0.24,0.883732
+XGBoost (original notebook),pr,0.25,0.880999
+XGBoost (original notebook),pr,0.26,0.876991
+XGBoost (original notebook),pr,0.27,0.872178
+XGBoost (original notebook),pr,0.28,0.868498
+XGBoost (original notebook),pr,0.29,0.864547
+XGBoost (original notebook),pr,0.3,0.858265
+XGBoost (original notebook),pr,0.31,0.855001
+XGBoost (original notebook),pr,0.32,0.850787
+XGBoost (original notebook),pr,0.33,0.845326
+XGBoost (original notebook),pr,0.34,0.84025
+XGBoost (original notebook),pr,0.35,0.837009
+XGBoost (original notebook),pr,0.36,0.833545
+XGBoost (original notebook),pr,0.37,0.8302
+XGBoost (original notebook),pr,0.38,0.8272
+XGBoost (original notebook),pr,0.39,0.82396
+XGBoost (original notebook),pr,0.4,0.819957
+XGBoost (original notebook),pr,0.41,0.815188
+XGBoost (original notebook),pr,0.42,0.810038
+XGBoost (original notebook),pr,0.43,0.805996
+XGBoost (original notebook),pr,0.44,0.802832
+XGBoost (original notebook),pr,0.45,0.799811
+XGBoost (original notebook),pr,0.46,0.794565
+XGBoost (original notebook),pr,0.47,0.790332
+XGBoost (original notebook),pr,0.48,0.785188
+XGBoost (original notebook),pr,0.49,0.780373
+XGBoost (original notebook),pr,0.5,0.775987
+XGBoost (original notebook),pr,0.51,0.772348
+XGBoost (original notebook),pr,0.52,0.76711
+XGBoost (original notebook),pr,0.53,0.763811
+XGBoost (original notebook),pr,0.54,0.759746
+XGBoost (original notebook),pr,0.55,0.75523
+XGBoost (original notebook),pr,0.56,0.751841
+XGBoost (original notebook),pr,0.57,0.747646
+XGBoost (original notebook),pr,0.58,0.74288
+XGBoost (original notebook),pr,0.59,0.738785
+XGBoost (original notebook),pr,0.6,0.733621
+XGBoost (original notebook),pr,0.61,0.729232
+XGBoost (original notebook),pr,0.62,0.724013
+XGBoost (original notebook),pr,0.63,0.719107
+XGBoost (original notebook),pr,0.64,0.713403
+XGBoost (original notebook),pr,0.65,0.70828
+XGBoost (original notebook),pr,0.66,0.703523
+XGBoost (original notebook),pr,0.67,0.698645
+XGBoost (original notebook),pr,0.68,0.692642
+XGBoost (original notebook),pr,0.69,0.68751
+XGBoost (original notebook),pr,0.7,0.682526
+XGBoost (original notebook),pr,0.71,0.677215
+XGBoost (original notebook),pr,0.72,0.67289
+XGBoost (original notebook),pr,0.73,0.667774
+XGBoost (original notebook),pr,0.74,0.662747
+XGBoost (original notebook),pr,0.75,0.656917
+XGBoost (original notebook),pr,0.76,0.649805
+XGBoost (original notebook),pr,0.77,0.64323
+XGBoost (original notebook),pr,0.78,0.636016
+XGBoost (original notebook),pr,0.79,0.629429
+XGBoost (original notebook),pr,0.8,0.622906
+XGBoost (original notebook),pr,0.81,0.617165
+XGBoost (original notebook),pr,0.82,0.609393
+XGBoost (original notebook),pr,0.83,0.601738
+XGBoost (original notebook),pr,0.84,0.593677
+XGBoost (original notebook),pr,0.85,0.585483
+XGBoost (original notebook),pr,0.86,0.57703
+XGBoost (original notebook),pr,0.87,0.568624
+XGBoost (original notebook),pr,0.88,0.559962
+XGBoost (original notebook),pr,0.89,0.551144
+XGBoost (original notebook),pr,0.9,0.541917
+XGBoost (original notebook),pr,0.91,0.531693
+XGBoost (original notebook),pr,0.92,0.518176
+XGBoost (original notebook),pr,0.93,0.505157
+XGBoost (original notebook),pr,0.94,0.493084
+XGBoost (original notebook),pr,0.95,0.475059
+XGBoost (original notebook),pr,0.96,0.455277
+XGBoost (original notebook),pr,0.97,0.434067
+XGBoost (original notebook),pr,0.98,0.400916
+XGBoost (original notebook),pr,0.99,0.357514
+XGBoost (original notebook),pr,1,0.22597
+Logistic Regression,roc,0,3.7365e-05
+Logistic Regression,roc,0.01,0.205508
+Logistic Regression,roc,0.02,0.320779
+Logistic Regression,roc,0.03,0.392594
+Logistic Regression,roc,0.04,0.460075
+Logistic Regression,roc,0.05,0.50936
+Logistic Regression,roc,0.06,0.555244
+Logistic Regression,roc,0.07,0.595524
+Logistic Regression,roc,0.08,0.630871
+Logistic Regression,roc,0.09,0.66293
+Logistic Regression,roc,0.1,0.691066
+Logistic Regression,roc,0.11,0.715054
+Logistic Regression,roc,0.12,0.737922
+Logistic Regression,roc,0.13,0.759706
+Logistic Regression,roc,0.14,0.778836
+Logistic Regression,roc,0.15,0.797631
+Logistic Regression,roc,0.16,0.81452
+Logistic Regression,roc,0.17,0.827411
+Logistic Regression,roc,0.18,0.840862
+Logistic Regression,roc,0.19,0.852894
+Logistic Regression,roc,0.2,0.86429
+Logistic Regression,roc,0.21,0.874454
+Logistic Regression,roc,0.22,0.884916
+Logistic Regression,roc,0.23,0.894332
+Logistic Regression,roc,0.24,0.902926
+Logistic Regression,roc,0.25,0.910473
+Logistic Regression,roc,0.26,0.918245
+Logistic Regression,roc,0.27,0.925046
+Logistic Regression,roc,0.28,0.930613
+Logistic Regression,roc,0.29,0.935583
+Logistic Regression,roc,0.3,0.94044
+Logistic Regression,roc,0.31,0.944961
+Logistic Regression,roc,0.32,0.948324
+Logistic Regression,roc,0.33,0.951612
+Logistic Regression,roc,0.34,0.954975
+Logistic Regression,roc,0.35,0.958151
+Logistic Regression,roc,0.36,0.959795
+Logistic Regression,roc,0.37,0.962112
+Logistic Regression,roc,0.38,0.965138
+Logistic Regression,roc,0.39,0.96753
+Logistic Regression,roc,0.4,0.969884
+Logistic Regression,roc,0.41,0.971715
+Logistic Regression,roc,0.42,0.973583
+Logistic Regression,roc,0.43,0.975489
+Logistic Regression,roc,0.44,0.977581
+Logistic Regression,roc,0.45,0.978926
+Logistic Regression,roc,0.46,0.980533
+Logistic Regression,roc,0.47,0.982252
+Logistic Regression,roc,0.48,0.983373
+Logistic Regression,roc,0.49,0.984942
+Logistic Regression,roc,0.5,0.985913
+Logistic Regression,roc,0.51,0.986773
+Logistic Regression,roc,0.52,0.987819
+Logistic Regression,roc,0.53,0.988678
+Logistic Regression,roc,0.54,0.989127
+Logistic Regression,roc,0.55,0.989911
+Logistic Regression,roc,0.56,0.990621
+Logistic Regression,roc,0.57,0.991443
+Logistic Regression,roc,0.58,0.991929
+Logistic Regression,roc,0.59,0.99249
+Logistic Regression,roc,0.6,0.993013
+Logistic Regression,roc,0.61,0.993461
+Logistic Regression,roc,0.62,0.993573
+Logistic Regression,roc,0.63,0.993835
+Logistic Regression,roc,0.64,0.994246
+Logistic Regression,roc,0.65,0.994657
+Logistic Regression,roc,0.66,0.994769
+Logistic Regression,roc,0.67,0.99503
+Logistic Regression,roc,0.68,0.995255
+Logistic Regression,roc,0.69,0.995479
+Logistic Regression,roc,0.7,0.995965
+Logistic Regression,roc,0.71,0.996039
+Logistic Regression,roc,0.72,0.996263
+Logistic Regression,roc,0.73,0.996376
+Logistic Regression,roc,0.74,0.996787
+Logistic Regression,roc,0.75,0.997011
+Logistic Regression,roc,0.76,0.997123
+Logistic Regression,roc,0.77,0.997198
+Logistic Regression,roc,0.78,0.997497
+Logistic Regression,roc,0.79,0.997646
+Logistic Regression,roc,0.8,0.997908
+Logistic Regression,roc,0.81,0.997982
+Logistic Regression,roc,0.82,0.998244
+Logistic Regression,roc,0.83,0.998319
+Logistic Regression,roc,0.84,0.998356
+Logistic Regression,roc,0.85,0.998505
+Logistic Regression,roc,0.86,0.998655
+Logistic Regression,roc,0.87,0.998916
+Logistic Regression,roc,0.88,0.999103
+Logistic Regression,roc,0.89,0.999178
+Logistic Regression,roc,0.9,0.99929
+Logistic Regression,roc,0.91,0.999327
+Logistic Regression,roc,0.92,0.999552
+Logistic Regression,roc,0.93,0.999626
+Logistic Regression,roc,0.94,0.999813
+Logistic Regression,roc,0.95,0.999851
+Logistic Regression,roc,0.96,0.999851
+Logistic Regression,roc,0.97,0.999925
+Logistic Regression,roc,0.98,0.999925
+Logistic Regression,roc,0.99,0.999925
+Logistic Regression,roc,1,1
+Logistic Regression,pr,0,1
+Logistic Regression,pr,0.01,0.920861
+Logistic Regression,pr,0.02,0.90836
+Logistic Regression,pr,0.03,0.904267
+Logistic Regression,pr,0.04,0.911453
+Logistic Regression,pr,0.05,0.908977
+Logistic Regression,pr,0.06,0.907333
+Logistic Regression,pr,0.07,0.903977
+Logistic Regression,pr,0.08,0.89996
+Logistic Regression,pr,0.09,0.897639
+Logistic Regression,pr,0.1,0.898902
+Logistic Regression,pr,0.11,0.893744
+Logistic Regression,pr,0.12,0.888998
+Logistic Regression,pr,0.13,0.884797
+Logistic Regression,pr,0.14,0.882681
+Logistic Regression,pr,0.15,0.87807
+Logistic Regression,pr,0.16,0.873153
+Logistic Regression,pr,0.17,0.866212
+Logistic Regression,pr,0.18,0.862806
+Logistic Regression,pr,0.19,0.86128
+Logistic Regression,pr,0.2,0.857816
+Logistic Regression,pr,0.21,0.855248
+Logistic Regression,pr,0.22,0.852466
+Logistic Regression,pr,0.23,0.850383
+Logistic Regression,pr,0.24,0.848595
+Logistic Regression,pr,0.25,0.845779
+Logistic Regression,pr,0.26,0.843362
+Logistic Regression,pr,0.27,0.840624
+Logistic Regression,pr,0.28,0.837874
+Logistic Regression,pr,0.29,0.835599
+Logistic Regression,pr,0.3,0.831847
+Logistic Regression,pr,0.31,0.828819
+Logistic Regression,pr,0.32,0.82361
+Logistic Regression,pr,0.33,0.819444
+Logistic Regression,pr,0.34,0.812781
+Logistic Regression,pr,0.35,0.806937
+Logistic Regression,pr,0.36,0.80113
+Logistic Regression,pr,0.37,0.798385
+Logistic Regression,pr,0.38,0.7954
+Logistic Regression,pr,0.39,0.792518
+Logistic Regression,pr,0.4,0.789213
+Logistic Regression,pr,0.41,0.786687
+Logistic Regression,pr,0.42,0.783778
+Logistic Regression,pr,0.43,0.781404
+Logistic Regression,pr,0.44,0.778692
+Logistic Regression,pr,0.45,0.773527
+Logistic Regression,pr,0.46,0.769726
+Logistic Regression,pr,0.47,0.765811
+Logistic Regression,pr,0.48,0.760707
+Logistic Regression,pr,0.49,0.7555
+Logistic Regression,pr,0.5,0.7512
+Logistic Regression,pr,0.51,0.747355
+Logistic Regression,pr,0.52,0.742871
+Logistic Regression,pr,0.53,0.73768
+Logistic Regression,pr,0.54,0.73461
+Logistic Regression,pr,0.55,0.73111
+Logistic Regression,pr,0.56,0.72774
+Logistic Regression,pr,0.57,0.721964
+Logistic Regression,pr,0.58,0.718301
+Logistic Regression,pr,0.59,0.713986
+Logistic Regression,pr,0.6,0.710189
+Logistic Regression,pr,0.61,0.70589
+Logistic Regression,pr,0.62,0.701072
+Logistic Regression,pr,0.63,0.696413
+Logistic Regression,pr,0.64,0.692214
+Logistic Regression,pr,0.65,0.687754
+Logistic Regression,pr,0.66,0.682937
+Logistic Regression,pr,0.67,0.678642
+Logistic Regression,pr,0.68,0.674172
+Logistic Regression,pr,0.69,0.668302
+Logistic Regression,pr,0.7,0.663339
+Logistic Regression,pr,0.71,0.656399
+Logistic Regression,pr,0.72,0.651116
+Logistic Regression,pr,0.73,0.645575
+Logistic Regression,pr,0.74,0.640113
+Logistic Regression,pr,0.75,0.634625
+Logistic Regression,pr,0.76,0.629354
+Logistic Regression,pr,0.77,0.623007
+Logistic Regression,pr,0.78,0.617183
+Logistic Regression,pr,0.79,0.611114
+Logistic Regression,pr,0.8,0.605573
+Logistic Regression,pr,0.81,0.600196
+Logistic Regression,pr,0.82,0.592807
+Logistic Regression,pr,0.83,0.584081
+Logistic Regression,pr,0.84,0.576382
+Logistic Regression,pr,0.85,0.568246
+Logistic Regression,pr,0.86,0.561162
+Logistic Regression,pr,0.87,0.551298
+Logistic Regression,pr,0.88,0.543101
+Logistic Regression,pr,0.89,0.53454
+Logistic Regression,pr,0.9,0.525548
+Logistic Regression,pr,0.91,0.514881
+Logistic Regression,pr,0.92,0.504967
+Logistic Regression,pr,0.93,0.49219
+Logistic Regression,pr,0.94,0.47759
+Logistic Regression,pr,0.95,0.459549
+Logistic Regression,pr,0.96,0.436005
+Logistic Regression,pr,0.97,0.412855
+Logistic Regression,pr,0.98,0.383844
+Logistic Regression,pr,0.99,0.3428
+Logistic Regression,pr,1,0.225884
+Random Forest,roc,0,0.00250346
+Random Forest,roc,0.01,0.244405
+Random Forest,roc,0.02,0.343646
+Random Forest,roc,0.03,0.420767
+Random Forest,roc,0.04,0.482233
+Random Forest,roc,0.05,0.532676
+Random Forest,roc,0.06,0.576094
+Random Forest,roc,0.07,0.615028
+Random Forest,roc,0.08,0.649142
+Random Forest,roc,0.09,0.677353
+Random Forest,roc,0.1,0.706685
+Random Forest,roc,0.11,0.731682
+Random Forest,roc,0.12,0.755334
+Random Forest,roc,0.13,0.776968
+Random Forest,roc,0.14,0.79438
+Random Forest,roc,0.15,0.812951
+Random Forest,roc,0.16,0.827187
+Random Forest,roc,0.17,0.839629
+Random Forest,roc,0.18,0.853716
+Random Forest,roc,0.19,0.866233
+Random Forest,roc,0.2,0.877592
+Random Forest,roc,0.21,0.886186
+Random Forest,roc,0.22,0.894556
+Random Forest,roc,0.23,0.903
+Random Forest,roc,0.24,0.910735
+Random Forest,roc,0.25,0.918619
+Random Forest,roc,0.26,0.924934
+Random Forest,roc,0.27,0.931211
+Random Forest,roc,0.28,0.936293
+Random Forest,roc,0.29,0.941412
+Random Forest,roc,0.3,0.945746
+Random Forest,roc,0.31,0.949744
+Random Forest,roc,0.32,0.953406
+Random Forest,roc,0.33,0.957479
+Random Forest,roc,0.34,0.960729
+Random Forest,roc,0.35,0.964391
+Random Forest,roc,0.36,0.966745
+Random Forest,roc,0.37,0.969996
+Random Forest,roc,0.38,0.971715
+Random Forest,roc,0.39,0.973807
+Random Forest,roc,0.4,0.975339
+Random Forest,roc,0.41,0.977207
+Random Forest,roc,0.42,0.978702
+Random Forest,roc,0.43,0.980608
+Random Forest,roc,0.44,0.981616
+Random Forest,roc,0.45,0.983373
+Random Forest,roc,0.46,0.984381
+Random Forest,roc,0.47,0.985689
+Random Forest,roc,0.48,0.986698
+Random Forest,roc,0.49,0.987557
+Random Forest,roc,0.5,0.988417
+Random Forest,roc,0.51,0.989127
+Random Forest,roc,0.52,0.989762
+Random Forest,roc,0.53,0.990547
+Random Forest,roc,0.54,0.991481
+Random Forest,roc,0.55,0.991854
+Random Forest,roc,0.56,0.992452
+Random Forest,roc,0.57,0.992938
+Random Forest,roc,0.58,0.993461
+Random Forest,roc,0.59,0.99376
+Random Forest,roc,0.6,0.994059
+Random Forest,roc,0.61,0.994507
+Random Forest,roc,0.62,0.994732
+Random Forest,roc,0.63,0.994956
+Random Forest,roc,0.64,0.995217
+Random Forest,roc,0.65,0.995628
+Random Forest,roc,0.66,0.995852
+Random Forest,roc,0.67,0.996151
+Random Forest,roc,0.68,0.996376
+Random Forest,roc,0.69,0.996525
+Random Forest,roc,0.7,0.996675
+Random Forest,roc,0.71,0.996824
+Random Forest,roc,0.72,0.996973
+Random Forest,roc,0.73,0.997198
+Random Forest,roc,0.74,0.997497
+Random Forest,roc,0.75,0.997683
+Random Forest,roc,0.76,0.997721
+Random Forest,roc,0.77,0.997945
+Random Forest,roc,0.78,0.998132
+Random Forest,roc,0.79,0.998319
+Random Forest,roc,0.8,0.998505
+Random Forest,roc,0.81,0.998617
+Random Forest,roc,0.82,0.998767
+Random Forest,roc,0.83,0.998991
+Random Forest,roc,0.84,0.999066
+Random Forest,roc,0.85,0.999215
+Random Forest,roc,0.86,0.99929
+Random Forest,roc,0.87,0.99929
+Random Forest,roc,0.88,0.99929
+Random Forest,roc,0.89,0.999402
+Random Forest,roc,0.9,0.999589
+Random Forest,roc,0.91,0.999626
+Random Forest,roc,0.92,0.999664
+Random Forest,roc,0.93,0.999701
+Random Forest,roc,0.94,0.999738
+Random Forest,roc,0.95,0.999851
+Random Forest,roc,0.96,0.999888
+Random Forest,roc,0.97,0.999925
+Random Forest,roc,0.98,0.999925
+Random Forest,roc,0.99,0.999963
+Random Forest,roc,1,1
+Random Forest,pr,0,1
+Random Forest,pr,0.01,0.960521
+Random Forest,pr,0.02,0.962248
+Random Forest,pr,0.03,0.958228
+Random Forest,pr,0.04,0.957086
+Random Forest,pr,0.05,0.950965
+Random Forest,pr,0.06,0.943588
+Random Forest,pr,0.07,0.941497
+Random Forest,pr,0.08,0.936949
+Random Forest,pr,0.09,0.931906
+Random Forest,pr,0.1,0.928852
+Random Forest,pr,0.11,0.925493
+Random Forest,pr,0.12,0.92139
+Random Forest,pr,0.13,0.919888
+Random Forest,pr,0.14,0.915909
+Random Forest,pr,0.15,0.913112
+Random Forest,pr,0.16,0.910872
+Random Forest,pr,0.17,0.906189
+Random Forest,pr,0.18,0.902912
+Random Forest,pr,0.19,0.900159
+Random Forest,pr,0.2,0.894904
+Random Forest,pr,0.21,0.889667
+Random Forest,pr,0.22,0.885544
+Random Forest,pr,0.23,0.882446
+Random Forest,pr,0.24,0.878782
+Random Forest,pr,0.25,0.874179
+Random Forest,pr,0.26,0.869974
+Random Forest,pr,0.27,0.867571
+Random Forest,pr,0.28,0.863892
+Random Forest,pr,0.29,0.858237
+Random Forest,pr,0.3,0.853702
+Random Forest,pr,0.31,0.849138
+Random Forest,pr,0.32,0.843996
+Random Forest,pr,0.33,0.838823
+Random Forest,pr,0.34,0.834821
+Random Forest,pr,0.35,0.830033
+Random Forest,pr,0.36,0.828171
+Random Forest,pr,0.37,0.824099
+Random Forest,pr,0.38,0.820168
+Random Forest,pr,0.39,0.817442
+Random Forest,pr,0.4,0.81344
+Random Forest,pr,0.41,0.809345
+Random Forest,pr,0.42,0.803526
+Random Forest,pr,0.43,0.798941
+Random Forest,pr,0.44,0.794935
+Random Forest,pr,0.45,0.790778
+Random Forest,pr,0.46,0.785742
+Random Forest,pr,0.47,0.782444
+Random Forest,pr,0.48,0.779401
+Random Forest,pr,0.49,0.773944
+Random Forest,pr,0.5,0.769405
+Random Forest,pr,0.51,0.764566
+Random Forest,pr,0.52,0.761008
+Random Forest,pr,0.53,0.756898
+Random Forest,pr,0.54,0.751729
+Random Forest,pr,0.55,0.746749
+Random Forest,pr,0.56,0.742475
+Random Forest,pr,0.57,0.738954
+Random Forest,pr,0.58,0.734091
+Random Forest,pr,0.59,0.7294
+Random Forest,pr,0.6,0.725684
+Random Forest,pr,0.61,0.721447
+Random Forest,pr,0.62,0.717129
+Random Forest,pr,0.63,0.712845
+Random Forest,pr,0.64,0.708193
+Random Forest,pr,0.65,0.701856
+Random Forest,pr,0.66,0.695075
+Random Forest,pr,0.67,0.689911
+Random Forest,pr,0.68,0.684951
+Random Forest,pr,0.69,0.681109
+Random Forest,pr,0.7,0.675609
+Random Forest,pr,0.71,0.670825
+Random Forest,pr,0.72,0.664865
+Random Forest,pr,0.73,0.659857
+Random Forest,pr,0.74,0.654628
+Random Forest,pr,0.75,0.64954
+Random Forest,pr,0.76,0.644146
+Random Forest,pr,0.77,0.638289
+Random Forest,pr,0.78,0.631995
+Random Forest,pr,0.79,0.625169
+Random Forest,pr,0.8,0.620146
+Random Forest,pr,0.81,0.613168
+Random Forest,pr,0.82,0.607352
+Random Forest,pr,0.83,0.598566
+Random Forest,pr,0.84,0.588949
+Random Forest,pr,0.85,0.58175
+Random Forest,pr,0.86,0.574779
+Random Forest,pr,0.87,0.566796
+Random Forest,pr,0.88,0.558354
+Random Forest,pr,0.89,0.546646
+Random Forest,pr,0.9,0.536109
+Random Forest,pr,0.91,0.524991
+Random Forest,pr,0.92,0.514299
+Random Forest,pr,0.93,0.5016
+Random Forest,pr,0.94,0.487478
+Random Forest,pr,0.95,0.470579
+Random Forest,pr,0.96,0.45276
+Random Forest,pr,0.97,0.432423
+Random Forest,pr,0.98,0.401031
+Random Forest,pr,0.99,0.354901
+Random Forest,pr,1,0.225445
+HistGradientBoosting,roc,0,0.00198035
+HistGradientBoosting,roc,0.01,0.24788
+HistGradientBoosting,roc,0.02,0.352277
+HistGradientBoosting,roc,0.03,0.43052
+HistGradientBoosting,roc,0.04,0.488585
+HistGradientBoosting,roc,0.05,0.540223
+HistGradientBoosting,roc,0.06,0.584277
+HistGradientBoosting,roc,0.07,0.61996
+HistGradientBoosting,roc,0.08,0.654075
+HistGradientBoosting,roc,0.09,0.685835
+HistGradientBoosting,roc,0.1,0.714367
+HistGradientBoosting,roc,0.11,0.739304
+HistGradientBoosting,roc,0.12,0.761387
+HistGradientBoosting,roc,0.13,0.779771
+HistGradientBoosting,roc,0.14,0.797967
+HistGradientBoosting,roc,0.15,0.814782
+HistGradientBoosting,roc,0.16,0.830662
+HistGradientBoosting,roc,0.17,0.843814
+HistGradientBoosting,roc,0.18,0.855435
+HistGradientBoosting,roc,0.19,0.867803
+HistGradientBoosting,roc,0.2,0.879274
+HistGradientBoosting,roc,0.21,0.890222
+HistGradientBoosting,roc,0.22,0.899339
+HistGradientBoosting,roc,0.23,0.907671
+HistGradientBoosting,roc,0.24,0.914285
+HistGradientBoosting,roc,0.25,0.920711
+HistGradientBoosting,roc,0.26,0.927101
+HistGradientBoosting,roc,0.27,0.933752
+HistGradientBoosting,roc,0.28,0.938946
+HistGradientBoosting,roc,0.29,0.944065
+HistGradientBoosting,roc,0.3,0.948063
+HistGradientBoosting,roc,0.31,0.951538
+HistGradientBoosting,roc,0.32,0.955461
+HistGradientBoosting,roc,0.33,0.959085
+HistGradientBoosting,roc,0.34,0.962448
+HistGradientBoosting,roc,0.35,0.965549
+HistGradientBoosting,roc,0.36,0.96809
+HistGradientBoosting,roc,0.37,0.970706
+HistGradientBoosting,roc,0.38,0.972649
+HistGradientBoosting,roc,0.39,0.97433
+HistGradientBoosting,roc,0.4,0.976348
+HistGradientBoosting,roc,0.41,0.977469
+HistGradientBoosting,roc,0.42,0.979076
+HistGradientBoosting,roc,0.43,0.980608
+HistGradientBoosting,roc,0.44,0.981878
+HistGradientBoosting,roc,0.45,0.983223
+HistGradientBoosting,roc,0.46,0.98468
+HistGradientBoosting,roc,0.47,0.985801
+HistGradientBoosting,roc,0.48,0.986698
+HistGradientBoosting,roc,0.49,0.98752
+HistGradientBoosting,roc,0.5,0.988454
+HistGradientBoosting,roc,0.51,0.989239
+HistGradientBoosting,roc,0.52,0.990248
+HistGradientBoosting,roc,0.53,0.990995
+HistGradientBoosting,roc,0.54,0.99178
+HistGradientBoosting,roc,0.55,0.992265
+HistGradientBoosting,roc,0.56,0.992938
+HistGradientBoosting,roc,0.57,0.993386
+HistGradientBoosting,roc,0.58,0.993797
+HistGradientBoosting,roc,0.59,0.994171
+HistGradientBoosting,roc,0.6,0.99447
+HistGradientBoosting,roc,0.61,0.994956
+HistGradientBoosting,roc,0.62,0.995329
+HistGradientBoosting,roc,0.63,0.99574
+HistGradientBoosting,roc,0.64,0.995927
+HistGradientBoosting,roc,0.65,0.996039
+HistGradientBoosting,roc,0.66,0.996301
+HistGradientBoosting,roc,0.67,0.996525
+HistGradientBoosting,roc,0.68,0.997011
+HistGradientBoosting,roc,0.69,0.997048
+HistGradientBoosting,roc,0.7,0.99731
+HistGradientBoosting,roc,0.71,0.997347
+HistGradientBoosting,roc,0.72,0.997609
+HistGradientBoosting,roc,0.73,0.997646
+HistGradientBoosting,roc,0.74,0.99787
+HistGradientBoosting,roc,0.75,0.998132
+HistGradientBoosting,roc,0.76,0.998244
+HistGradientBoosting,roc,0.77,0.998468
+HistGradientBoosting,roc,0.78,0.998655
+HistGradientBoosting,roc,0.79,0.998767
+HistGradientBoosting,roc,0.8,0.998804
+HistGradientBoosting,roc,0.81,0.999029
+HistGradientBoosting,roc,0.82,0.999141
+HistGradientBoosting,roc,0.83,0.999178
+HistGradientBoosting,roc,0.84,0.99929
+HistGradientBoosting,roc,0.85,0.999365
+HistGradientBoosting,roc,0.86,0.999402
+HistGradientBoosting,roc,0.87,0.999477
+HistGradientBoosting,roc,0.88,0.999477
+HistGradientBoosting,roc,0.89,0.999552
+HistGradientBoosting,roc,0.9,0.999589
+HistGradientBoosting,roc,0.91,0.999664
+HistGradientBoosting,roc,0.92,0.999738
+HistGradientBoosting,roc,0.93,0.999776
+HistGradientBoosting,roc,0.94,0.999813
+HistGradientBoosting,roc,0.95,0.999851
+HistGradientBoosting,roc,0.96,0.999888
+HistGradientBoosting,roc,0.97,0.999925
+HistGradientBoosting,roc,0.98,0.999925
+HistGradientBoosting,roc,0.99,0.999963
+HistGradientBoosting,roc,1,1
+HistGradientBoosting,pr,0,1
+HistGradientBoosting,pr,0.01,0.96558
+HistGradientBoosting,pr,0.02,0.963981
+HistGradientBoosting,pr,0.03,0.96514
+HistGradientBoosting,pr,0.04,0.957086
+HistGradientBoosting,pr,0.05,0.956402
+HistGradientBoosting,pr,0.06,0.94929
+HistGradientBoosting,pr,0.07,0.945016
+HistGradientBoosting,pr,0.08,0.941925
+HistGradientBoosting,pr,0.09,0.936737
+HistGradientBoosting,pr,0.1,0.930143
+HistGradientBoosting,pr,0.11,0.922882
+HistGradientBoosting,pr,0.12,0.921654
+HistGradientBoosting,pr,0.13,0.918673
+HistGradientBoosting,pr,0.14,0.917255
+HistGradientBoosting,pr,0.15,0.912489
+HistGradientBoosting,pr,0.16,0.911065
+HistGradientBoosting,pr,0.17,0.90836
+HistGradientBoosting,pr,0.18,0.902235
+HistGradientBoosting,pr,0.19,0.898412
+HistGradientBoosting,pr,0.2,0.894396
+HistGradientBoosting,pr,0.21,0.89161
+HistGradientBoosting,pr,0.22,0.888618
+HistGradientBoosting,pr,0.23,0.884729
+HistGradientBoosting,pr,0.24,0.88142
+HistGradientBoosting,pr,0.25,0.878311
+HistGradientBoosting,pr,0.26,0.874153
+HistGradientBoosting,pr,0.27,0.871967
+HistGradientBoosting,pr,0.28,0.867091
+HistGradientBoosting,pr,0.29,0.864547
+HistGradientBoosting,pr,0.3,0.859362
+HistGradientBoosting,pr,0.31,0.855326
+HistGradientBoosting,pr,0.32,0.849437
+HistGradientBoosting,pr,0.33,0.845974
+HistGradientBoosting,pr,0.34,0.842038
+HistGradientBoosting,pr,0.35,0.837536
+HistGradientBoosting,pr,0.36,0.83328
+HistGradientBoosting,pr,0.37,0.829179
+HistGradientBoosting,pr,0.38,0.824081
+HistGradientBoosting,pr,0.39,0.821043
+HistGradientBoosting,pr,0.4,0.816991
+HistGradientBoosting,pr,0.41,0.812605
+HistGradientBoosting,pr,0.42,0.809455
+HistGradientBoosting,pr,0.43,0.806896
+HistGradientBoosting,pr,0.44,0.803067
+HistGradientBoosting,pr,0.45,0.80006
+HistGradientBoosting,pr,0.46,0.793343
+HistGradientBoosting,pr,0.47,0.788404
+HistGradientBoosting,pr,0.48,0.783942
+HistGradientBoosting,pr,0.49,0.779434
+HistGradientBoosting,pr,0.5,0.774953
+HistGradientBoosting,pr,0.51,0.771387
+HistGradientBoosting,pr,0.52,0.767058
+HistGradientBoosting,pr,0.53,0.763226
+HistGradientBoosting,pr,0.54,0.758675
+HistGradientBoosting,pr,0.55,0.754908
+HistGradientBoosting,pr,0.56,0.750366
+HistGradientBoosting,pr,0.57,0.74506
+HistGradientBoosting,pr,0.58,0.740134
+HistGradientBoosting,pr,0.59,0.736579
+HistGradientBoosting,pr,0.6,0.731243
+HistGradientBoosting,pr,0.61,0.725648
+HistGradientBoosting,pr,0.62,0.720181
+HistGradientBoosting,pr,0.63,0.715658
+HistGradientBoosting,pr,0.64,0.711261
+HistGradientBoosting,pr,0.65,0.705752
+HistGradientBoosting,pr,0.66,0.701281
+HistGradientBoosting,pr,0.67,0.696785
+HistGradientBoosting,pr,0.68,0.692488
+HistGradientBoosting,pr,0.69,0.686768
+HistGradientBoosting,pr,0.7,0.681483
+HistGradientBoosting,pr,0.71,0.676682
+HistGradientBoosting,pr,0.72,0.671545
+HistGradientBoosting,pr,0.73,0.666246
+HistGradientBoosting,pr,0.74,0.66081
+HistGradientBoosting,pr,0.75,0.654742
+HistGradientBoosting,pr,0.76,0.649058
+HistGradientBoosting,pr,0.77,0.642708
+HistGradientBoosting,pr,0.78,0.635386
+HistGradientBoosting,pr,0.79,0.629134
+HistGradientBoosting,pr,0.8,0.621719
+HistGradientBoosting,pr,0.81,0.615467
+HistGradientBoosting,pr,0.82,0.608785
+HistGradientBoosting,pr,0.83,0.601935
+HistGradientBoosting,pr,0.84,0.594927
+HistGradientBoosting,pr,0.85,0.585849
+HistGradientBoosting,pr,0.86,0.576578
+HistGradientBoosting,pr,0.87,0.568663
+HistGradientBoosting,pr,0.88,0.560566
+HistGradientBoosting,pr,0.89,0.55208
+HistGradientBoosting,pr,0.9,0.54245
+HistGradientBoosting,pr,0.91,0.531101
+HistGradientBoosting,pr,0.92,0.517738
+HistGradientBoosting,pr,0.93,0.505328
+HistGradientBoosting,pr,0.94,0.492449
+HistGradientBoosting,pr,0.95,0.473966
+HistGradientBoosting,pr,0.96,0.455671
+HistGradientBoosting,pr,0.97,0.43471
+HistGradientBoosting,pr,0.98,0.400272
+HistGradientBoosting,pr,0.99,0.357112
+HistGradientBoosting,pr,1,0.225722
+XGBoost (tuned),roc,0,0.00171879
+XGBoost (tuned),roc,0.01,0.254456
+XGBoost (tuned),roc,0.02,0.353324
+XGBoost (tuned),roc,0.03,0.431977
+XGBoost (tuned),roc,0.04,0.490154
+XGBoost (tuned),roc,0.05,0.54127
+XGBoost (tuned),roc,0.06,0.587303
+XGBoost (tuned),roc,0.07,0.625341
+XGBoost (tuned),roc,0.08,0.657139
+XGBoost (tuned),roc,0.09,0.687442
+XGBoost (tuned),roc,0.1,0.717356
+XGBoost (tuned),roc,0.11,0.741322
+XGBoost (tuned),roc,0.12,0.761835
+XGBoost (tuned),roc,0.13,0.781116
+XGBoost (tuned),roc,0.14,0.7992
+XGBoost (tuned),roc,0.15,0.814894
+XGBoost (tuned),roc,0.16,0.829317
+XGBoost (tuned),roc,0.17,0.844113
+XGBoost (tuned),roc,0.18,0.857079
+XGBoost (tuned),roc,0.19,0.869073
+XGBoost (tuned),roc,0.2,0.879087
+XGBoost (tuned),roc,0.21,0.89067
+XGBoost (tuned),roc,0.22,0.899787
+XGBoost (tuned),roc,0.23,0.907783
+XGBoost (tuned),roc,0.24,0.915331
+XGBoost (tuned),roc,0.25,0.921533
+XGBoost (tuned),roc,0.26,0.928147
+XGBoost (tuned),roc,0.27,0.934948
+XGBoost (tuned),roc,0.28,0.93988
+XGBoost (tuned),roc,0.29,0.943766
+XGBoost (tuned),roc,0.3,0.9481
+XGBoost (tuned),roc,0.31,0.951911
+XGBoost (tuned),roc,0.32,0.955162
+XGBoost (tuned),roc,0.33,0.958674
+XGBoost (tuned),roc,0.34,0.961776
+XGBoost (tuned),roc,0.35,0.964989
+XGBoost (tuned),roc,0.36,0.968277
+XGBoost (tuned),roc,0.37,0.970893
+XGBoost (tuned),roc,0.38,0.972686
+XGBoost (tuned),roc,0.39,0.974965
+XGBoost (tuned),roc,0.4,0.97646
+XGBoost (tuned),roc,0.41,0.977805
+XGBoost (tuned),roc,0.42,0.978926
+XGBoost (tuned),roc,0.43,0.980832
+XGBoost (tuned),roc,0.44,0.982177
+XGBoost (tuned),roc,0.45,0.983709
+XGBoost (tuned),roc,0.46,0.98483
+XGBoost (tuned),roc,0.47,0.985727
+XGBoost (tuned),roc,0.48,0.986511
+XGBoost (tuned),roc,0.49,0.987492
+XGBoost (tuned),roc,0.5,0.988529
+XGBoost (tuned),roc,0.51,0.989463
+XGBoost (tuned),roc,0.52,0.990397
+XGBoost (tuned),roc,0.53,0.990995
+XGBoost (tuned),roc,0.54,0.991742
+XGBoost (tuned),roc,0.55,0.992378
+XGBoost (tuned),roc,0.56,0.992938
+XGBoost (tuned),roc,0.57,0.993349
+XGBoost (tuned),roc,0.58,0.993984
+XGBoost (tuned),roc,0.59,0.994208
+XGBoost (tuned),roc,0.6,0.994732
+XGBoost (tuned),roc,0.61,0.995255
+XGBoost (tuned),roc,0.62,0.995479
+XGBoost (tuned),roc,0.63,0.995815
+XGBoost (tuned),roc,0.64,0.996077
+XGBoost (tuned),roc,0.65,0.996114
+XGBoost (tuned),roc,0.66,0.996525
+XGBoost (tuned),roc,0.67,0.996562
+XGBoost (tuned),roc,0.68,0.996824
+XGBoost (tuned),roc,0.69,0.997086
+XGBoost (tuned),roc,0.7,0.997235
+XGBoost (tuned),roc,0.71,0.997459
+XGBoost (tuned),roc,0.72,0.997534
+XGBoost (tuned),roc,0.73,0.997683
+XGBoost (tuned),roc,0.74,0.997908
+XGBoost (tuned),roc,0.75,0.998244
+XGBoost (tuned),roc,0.76,0.998468
+XGBoost (tuned),roc,0.77,0.998655
+XGBoost (tuned),roc,0.78,0.998804
+XGBoost (tuned),roc,0.79,0.998842
+XGBoost (tuned),roc,0.8,0.998916
+XGBoost (tuned),roc,0.81,0.998991
+XGBoost (tuned),roc,0.82,0.999103
+XGBoost (tuned),roc,0.83,0.999141
+XGBoost (tuned),roc,0.84,0.999215
+XGBoost (tuned),roc,0.85,0.99929
+XGBoost (tuned),roc,0.86,0.999327
+XGBoost (tuned),roc,0.87,0.999402
+XGBoost (tuned),roc,0.88,0.999402
+XGBoost (tuned),roc,0.89,0.999477
+XGBoost (tuned),roc,0.9,0.999477
+XGBoost (tuned),roc,0.91,0.999477
+XGBoost (tuned),roc,0.92,0.999514
+XGBoost (tuned),roc,0.93,0.999552
+XGBoost (tuned),roc,0.94,0.999701
+XGBoost (tuned),roc,0.95,0.999776
+XGBoost (tuned),roc,0.96,0.999813
+XGBoost (tuned),roc,0.97,0.999888
+XGBoost (tuned),roc,0.98,0.999925
+XGBoost (tuned),roc,0.99,1
+XGBoost (tuned),roc,1,1
+XGBoost (tuned),pr,0,1
+XGBoost (tuned),pr,0.01,0.96326
+XGBoost (tuned),pr,0.02,0.968335
+XGBoost (tuned),pr,0.03,0.961672
+XGBoost (tuned),pr,0.04,0.961057
+XGBoost (tuned),pr,0.05,0.954769
+XGBoost (tuned),pr,0.06,0.952544
+XGBoost (tuned),pr,0.07,0.946927
+XGBoost (tuned),pr,0.08,0.941911
+XGBoost (tuned),pr,0.09,0.938807
+XGBoost (tuned),pr,0.1,0.93079
+XGBoost (tuned),pr,0.11,0.926659
+XGBoost (tuned),pr,0.12,0.924957
+XGBoost (tuned),pr,0.13,0.921349
+XGBoost (tuned),pr,0.14,0.916357
+XGBoost (tuned),pr,0.15,0.912697
+XGBoost (tuned),pr,0.16,0.912036
+XGBoost (tuned),pr,0.17,0.908722
+XGBoost (tuned),pr,0.18,0.904607
+XGBoost (tuned),pr,0.19,0.89985
+XGBoost (tuned),pr,0.2,0.897395
+XGBoost (tuned),pr,0.21,0.893344
+XGBoost (tuned),pr,0.22,0.8905
+XGBoost (tuned),pr,0.23,0.88856
+XGBoost (tuned),pr,0.24,0.886055
+XGBoost (tuned),pr,0.25,0.883063
+XGBoost (tuned),pr,0.26,0.878415
+XGBoost (tuned),pr,0.27,0.874395
+XGBoost (tuned),pr,0.28,0.870718
+XGBoost (tuned),pr,0.29,0.865029
+XGBoost (tuned),pr,0.3,0.86075
+XGBoost (tuned),pr,0.31,0.855089
+XGBoost (tuned),pr,0.32,0.851379
+XGBoost (tuned),pr,0.33,0.846576
+XGBoost (tuned),pr,0.34,0.843443
+XGBoost (tuned),pr,0.35,0.838207
+XGBoost (tuned),pr,0.36,0.835279
+XGBoost (tuned),pr,0.37,0.832315
+XGBoost (tuned),pr,0.38,0.827573
+XGBoost (tuned),pr,0.39,0.824937
+XGBoost (tuned),pr,0.4,0.820989
+XGBoost (tuned),pr,0.41,0.816198
+XGBoost (tuned),pr,0.42,0.81191
+XGBoost (tuned),pr,0.43,0.808256
+XGBoost (tuned),pr,0.44,0.803341
+XGBoost (tuned),pr,0.45,0.798416
+XGBoost (tuned),pr,0.46,0.794723
+XGBoost (tuned),pr,0.47,0.789935
+XGBoost (tuned),pr,0.48,0.785259
+XGBoost (tuned),pr,0.49,0.780739
+XGBoost (tuned),pr,0.5,0.776865
+XGBoost (tuned),pr,0.51,0.772353
+XGBoost (tuned),pr,0.52,0.768043
+XGBoost (tuned),pr,0.53,0.764023
+XGBoost (tuned),pr,0.54,0.759752
+XGBoost (tuned),pr,0.55,0.754838
+XGBoost (tuned),pr,0.56,0.751361
+XGBoost (tuned),pr,0.57,0.747043
+XGBoost (tuned),pr,0.58,0.74334
+XGBoost (tuned),pr,0.59,0.738301
+XGBoost (tuned),pr,0.6,0.733675
+XGBoost (tuned),pr,0.61,0.729037
+XGBoost (tuned),pr,0.62,0.724394
+XGBoost (tuned),pr,0.63,0.71895
+XGBoost (tuned),pr,0.64,0.714802
+XGBoost (tuned),pr,0.65,0.70949
+XGBoost (tuned),pr,0.66,0.703236
+XGBoost (tuned),pr,0.67,0.69813
+XGBoost (tuned),pr,0.68,0.69361
+XGBoost (tuned),pr,0.69,0.688266
+XGBoost (tuned),pr,0.7,0.683791
+XGBoost (tuned),pr,0.71,0.678677
+XGBoost (tuned),pr,0.72,0.67424
+XGBoost (tuned),pr,0.73,0.668686
+XGBoost (tuned),pr,0.74,0.663333
+XGBoost (tuned),pr,0.75,0.65711
+XGBoost (tuned),pr,0.76,0.649807
+XGBoost (tuned),pr,0.77,0.643933
+XGBoost (tuned),pr,0.78,0.636451
+XGBoost (tuned),pr,0.79,0.63035
+XGBoost (tuned),pr,0.8,0.622808
+XGBoost (tuned),pr,0.81,0.616255
+XGBoost (tuned),pr,0.82,0.608785
+XGBoost (tuned),pr,0.83,0.600317
+XGBoost (tuned),pr,0.84,0.594753
+XGBoost (tuned),pr,0.85,0.586729
+XGBoost (tuned),pr,0.86,0.578206
+XGBoost (tuned),pr,0.87,0.569335
+XGBoost (tuned),pr,0.88,0.559809
+XGBoost (tuned),pr,0.89,0.552441
+XGBoost (tuned),pr,0.9,0.542891
+XGBoost (tuned),pr,0.91,0.531789
+XGBoost (tuned),pr,0.92,0.519659
+XGBoost (tuned),pr,0.93,0.507345
+XGBoost (tuned),pr,0.94,0.493582
+XGBoost (tuned),pr,0.95,0.475033
+XGBoost (tuned),pr,0.96,0.45552
+XGBoost (tuned),pr,0.97,0.434841
+XGBoost (tuned),pr,0.98,0.400978
+XGBoost (tuned),pr,0.99,0.358708
+XGBoost (tuned),pr,1,0.227038
+LightGBM (tuned),roc,0,0.0016067
+LightGBM (tuned),roc,0.01,0.252438
+LightGBM (tuned),roc,0.02,0.352464
+LightGBM (tuned),roc,0.03,0.431654
+LightGBM (tuned),roc,0.04,0.489145
+LightGBM (tuned),roc,0.05,0.542054
+LightGBM (tuned),roc,0.06,0.585904
+LightGBM (tuned),roc,0.07,0.623286
+LightGBM (tuned),roc,0.08,0.656245
+LightGBM (tuned),roc,0.09,0.685088
+LightGBM (tuned),roc,0.1,0.71427
+LightGBM (tuned),roc,0.11,0.739753
+LightGBM (tuned),roc,0.12,0.761088
+LightGBM (tuned),roc,0.13,0.779957
+LightGBM (tuned),roc,0.14,0.799238
+LightGBM (tuned),roc,0.15,0.814595
+LightGBM (tuned),roc,0.16,0.830512
+LightGBM (tuned),roc,0.17,0.843964
+LightGBM (tuned),roc,0.18,0.855734
+LightGBM (tuned),roc,0.19,0.866943
+LightGBM (tuned),roc,0.2,0.87946
+LightGBM (tuned),roc,0.21,0.889325
+LightGBM (tuned),roc,0.22,0.899002
+LightGBM (tuned),roc,0.23,0.906587
+LightGBM (tuned),roc,0.24,0.913948
+LightGBM (tuned),roc,0.25,0.920861
+LightGBM (tuned),roc,0.26,0.927661
+LightGBM (tuned),roc,0.27,0.93349
+LightGBM (tuned),roc,0.28,0.938497
+LightGBM (tuned),roc,0.29,0.943243
+LightGBM (tuned),roc,0.3,0.94739
+LightGBM (tuned),roc,0.31,0.950977
+LightGBM (tuned),roc,0.32,0.955199
+LightGBM (tuned),roc,0.33,0.958674
+LightGBM (tuned),roc,0.34,0.961439
+LightGBM (tuned),roc,0.35,0.965363
+LightGBM (tuned),roc,0.36,0.968053
+LightGBM (tuned),roc,0.37,0.970444
+LightGBM (tuned),roc,0.38,0.972313
+LightGBM (tuned),roc,0.39,0.974293
+LightGBM (tuned),roc,0.4,0.976124
+LightGBM (tuned),roc,0.41,0.977618
+LightGBM (tuned),roc,0.42,0.97915
+LightGBM (tuned),roc,0.43,0.980533
+LightGBM (tuned),roc,0.44,0.981841
+LightGBM (tuned),roc,0.45,0.983036
+LightGBM (tuned),roc,0.46,0.984307
+LightGBM (tuned),roc,0.47,0.985577
+LightGBM (tuned),roc,0.48,0.986698
+LightGBM (tuned),roc,0.49,0.98752
+LightGBM (tuned),roc,0.5,0.988492
+LightGBM (tuned),roc,0.51,0.989127
+LightGBM (tuned),roc,0.52,0.990136
+LightGBM (tuned),roc,0.53,0.99092
+LightGBM (tuned),roc,0.54,0.991481
+LightGBM (tuned),roc,0.55,0.992303
+LightGBM (tuned),roc,0.56,0.992901
+LightGBM (tuned),roc,0.57,0.993461
+LightGBM (tuned),roc,0.58,0.993797
+LightGBM (tuned),roc,0.59,0.994208
+LightGBM (tuned),roc,0.6,0.99447
+LightGBM (tuned),roc,0.61,0.994806
+LightGBM (tuned),roc,0.62,0.995367
+LightGBM (tuned),roc,0.63,0.995927
+LightGBM (tuned),roc,0.64,0.996151
+LightGBM (tuned),roc,0.65,0.996376
+LightGBM (tuned),roc,0.66,0.996525
+LightGBM (tuned),roc,0.67,0.996712
+LightGBM (tuned),roc,0.68,0.996749
+LightGBM (tuned),roc,0.69,0.997123
+LightGBM (tuned),roc,0.7,0.997235
+LightGBM (tuned),roc,0.71,0.997384
+LightGBM (tuned),roc,0.72,0.997683
+LightGBM (tuned),roc,0.73,0.997908
+LightGBM (tuned),roc,0.74,0.998057
+LightGBM (tuned),roc,0.75,0.998244
+LightGBM (tuned),roc,0.76,0.998319
+LightGBM (tuned),roc,0.77,0.998431
+LightGBM (tuned),roc,0.78,0.998655
+LightGBM (tuned),roc,0.79,0.998767
+LightGBM (tuned),roc,0.8,0.998879
+LightGBM (tuned),roc,0.81,0.998991
+LightGBM (tuned),roc,0.82,0.999103
+LightGBM (tuned),roc,0.83,0.99929
+LightGBM (tuned),roc,0.84,0.999365
+LightGBM (tuned),roc,0.85,0.999365
+LightGBM (tuned),roc,0.86,0.99944
+LightGBM (tuned),roc,0.87,0.999477
+LightGBM (tuned),roc,0.88,0.999477
+LightGBM (tuned),roc,0.89,0.999552
+LightGBM (tuned),roc,0.9,0.999626
+LightGBM (tuned),roc,0.91,0.999813
+LightGBM (tuned),roc,0.92,0.999813
+LightGBM (tuned),roc,0.93,0.999813
+LightGBM (tuned),roc,0.94,0.999851
+LightGBM (tuned),roc,0.95,0.999851
+LightGBM (tuned),roc,0.96,0.999851
+LightGBM (tuned),roc,0.97,0.999888
+LightGBM (tuned),roc,0.98,0.999925
+LightGBM (tuned),roc,0.99,0.999963
+LightGBM (tuned),roc,1,1
+LightGBM (tuned),pr,0,1
+LightGBM (tuned),pr,0.01,0.960521
+LightGBM (tuned),pr,0.02,0.969217
+LightGBM (tuned),pr,0.03,0.967594
+LightGBM (tuned),pr,0.04,0.957086
+LightGBM (tuned),pr,0.05,0.955037
+LightGBM (tuned),pr,0.06,0.95481
+LightGBM (tuned),pr,0.07,0.947689
+LightGBM (tuned),pr,0.08,0.938312
+LightGBM (tuned),pr,0.09,0.936617
+LightGBM (tuned),pr,0.1,0.931438
+LightGBM (tuned),pr,0.11,0.925785
+LightGBM (tuned),pr,0.12,0.924307
+LightGBM (tuned),pr,0.13,0.920328
+LightGBM (tuned),pr,0.14,0.916806
+LightGBM (tuned),pr,0.15,0.912396
+LightGBM (tuned),pr,0.16,0.908938
+LightGBM (tuned),pr,0.17,0.905828
+LightGBM (tuned),pr,0.18,0.903193
+LightGBM (tuned),pr,0.19,0.899368
+LightGBM (tuned),pr,0.2,0.897094
+LightGBM (tuned),pr,0.21,0.89377
+LightGBM (tuned),pr,0.22,0.890635
+LightGBM (tuned),pr,0.23,0.888882
+LightGBM (tuned),pr,0.24,0.885933
+LightGBM (tuned),pr,0.25,0.881319
+LightGBM (tuned),pr,0.26,0.876881
+LightGBM (tuned),pr,0.27,0.874606
+LightGBM (tuned),pr,0.28,0.870479
+LightGBM (tuned),pr,0.29,0.865511
+LightGBM (tuned),pr,0.3,0.861387
+LightGBM (tuned),pr,0.31,0.857074
+LightGBM (tuned),pr,0.32,0.85145
+LightGBM (tuned),pr,0.33,0.845974
+LightGBM (tuned),pr,0.34,0.840483
+LightGBM (tuned),pr,0.35,0.837761
+LightGBM (tuned),pr,0.36,0.834362
+LightGBM (tuned),pr,0.37,0.83027
+LightGBM (tuned),pr,0.38,0.828131
+LightGBM (tuned),pr,0.39,0.824313
+LightGBM (tuned),pr,0.4,0.819869
+LightGBM (tuned),pr,0.41,0.814804
+LightGBM (tuned),pr,0.42,0.812646
+LightGBM (tuned),pr,0.43,0.80775
+LightGBM (tuned),pr,0.44,0.803141
+LightGBM (tuned),pr,0.45,0.80022
+LightGBM (tuned),pr,0.46,0.795541
+LightGBM (tuned),pr,0.47,0.789219
+LightGBM (tuned),pr,0.48,0.784001
+LightGBM (tuned),pr,0.49,0.779944
+LightGBM (tuned),pr,0.5,0.776077
+LightGBM (tuned),pr,0.51,0.771638
+LightGBM (tuned),pr,0.52,0.767259
+LightGBM (tuned),pr,0.53,0.763539
+LightGBM (tuned),pr,0.54,0.759631
+LightGBM (tuned),pr,0.55,0.755444
+LightGBM (tuned),pr,0.56,0.75156
+LightGBM (tuned),pr,0.57,0.746038
+LightGBM (tuned),pr,0.58,0.741728
+LightGBM (tuned),pr,0.59,0.738173
+LightGBM (tuned),pr,0.6,0.732243
+LightGBM (tuned),pr,0.61,0.726714
+LightGBM (tuned),pr,0.62,0.72335
+LightGBM (tuned),pr,0.63,0.717138
+LightGBM (tuned),pr,0.64,0.711774
+LightGBM (tuned),pr,0.65,0.70701
+LightGBM (tuned),pr,0.66,0.70262
+LightGBM (tuned),pr,0.67,0.696265
+LightGBM (tuned),pr,0.68,0.691003
+LightGBM (tuned),pr,0.69,0.686309
+LightGBM (tuned),pr,0.7,0.681659
+LightGBM (tuned),pr,0.71,0.677022
+LightGBM (tuned),pr,0.72,0.671772
+LightGBM (tuned),pr,0.73,0.66702
+LightGBM (tuned),pr,0.74,0.661325
+LightGBM (tuned),pr,0.75,0.65541
+LightGBM (tuned),pr,0.76,0.649397
+LightGBM (tuned),pr,0.77,0.642277
+LightGBM (tuned),pr,0.78,0.635563
+LightGBM (tuned),pr,0.79,0.628996
+LightGBM (tuned),pr,0.8,0.623541
+LightGBM (tuned),pr,0.81,0.615993
+LightGBM (tuned),pr,0.82,0.607835
+LightGBM (tuned),pr,0.83,0.601746
+LightGBM (tuned),pr,0.84,0.593873
+LightGBM (tuned),pr,0.85,0.584649
+LightGBM (tuned),pr,0.86,0.576715
+LightGBM (tuned),pr,0.87,0.56779
+LightGBM (tuned),pr,0.88,0.560544
+LightGBM (tuned),pr,0.89,0.551362
+LightGBM (tuned),pr,0.9,0.541571
+LightGBM (tuned),pr,0.91,0.529784
+LightGBM (tuned),pr,0.92,0.518089
+LightGBM (tuned),pr,0.93,0.506216
+LightGBM (tuned),pr,0.94,0.490852
+LightGBM (tuned),pr,0.95,0.473145
+LightGBM (tuned),pr,0.96,0.454562
+LightGBM (tuned),pr,0.97,0.434148
+LightGBM (tuned),pr,0.98,0.399929
+LightGBM (tuned),pr,0.99,0.356902
+LightGBM (tuned),pr,1,0.225865
