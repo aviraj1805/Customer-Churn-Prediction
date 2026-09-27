@@ -1,158 +1,222 @@
-# Customer Churn Prediction — Kaggle Playground Series S6E3
+# Customer Churn Prediction
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue?style=flat-square&logo=python)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-1.7-F7931E?style=flat-square&logo=scikitlearn)
 ![XGBoost](https://img.shields.io/badge/Model-XGBoost-orange?style=flat-square)
-![AUC](https://img.shields.io/badge/CV%20AUC-0.9157-brightgreen?style=flat-square)
-![Kaggle](https://img.shields.io/badge/Kaggle-Playground%20S6E3-20BEFF?style=flat-square&logo=kaggle)
-![License](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey?style=flat-square)
+![ROC-AUC](https://img.shields.io/badge/Test%20ROC--AUC-0.9165-brightgreen?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-pytest-0A9EDC?style=flat-square&logo=pytest)
+[![Demo](https://img.shields.io/badge/Live%20demo-Render-46E3B7?style=flat-square&logo=render)](https://churn-predictor-aviraj.onrender.com)
+
+Predicts the probability that a telecom customer will cancel their service, so a retention team knows who to
+contact first. Built on the 594,000-customer Kaggle Playground S6E3 dataset as a production-style ML project:
+one scikit-learn pipeline from raw data to prediction, five tuned and compared models, an honest hold-out
+evaluation, automated tests, and a live web demo.
+
+**[Try the live demo](https://churn-predictor-aviraj.onrender.com)**: enter a customer's contract, services and
+charges and get their churn probability.
+
+<p align="center">
+  <img src="reports/figures/app_screenshot.png" width="85%" alt="Screenshot of the churn prediction web app">
+</p>
 
 ---
 
-## Problem Statement
+## Problem
 
-Predict the **probability that a telecom customer will churn** (leave the service) based on their usage patterns, contract details, and billing information.
+Keeping a customer is much cheaper than winning a new one. Given a customer's account details, services and
+billing, predict how likely they are to churn (binary classification). The competition metric is **ROC-AUC**:
+how well the model ranks churners above customers who stay.
 
-This is a **binary classification** problem evaluated using the **ROC-AUC score**.
+## Dataset
 
-> **Competition:** [Kaggle Playground Series — Season 6, Episode 3](https://www.kaggle.com/competitions/playground-series-s6e3)
-> **Sponsored by:** Google LLC
+[Kaggle Playground Series, Season 6 Episode 3](https://www.kaggle.com/competitions/playground-series-s6e3)
+(CC BY 4.0), a synthetic dataset generated from the IBM Telco churn data.
 
----
-
-## Dataset Overview
-
-| Property | Details |
+| | |
 |---|---|
-| Records | ~594,000 customer entries |
-| Features | 21 (demographics, services, billing) |
-| Target | `Churn` — Yes (1) / No (0) |
-| Evaluation Metric | ROC-AUC Score |
+| Training rows | 594,194. Kaggle's `test.csv` has no labels, so a hold-out split of `train.csv` is used for evaluation |
+| Features | 19: 4 numeric (tenure, monthly and total charges, senior citizen) and 15 categorical (contract, services, payment, demographics) |
+| Target | `Churn`: Yes (22.5%) / No (77.5%) |
+| Data quality | No missing values, no duplicate rows |
 
-### Key Features
+See [`data/README.md`](data/README.md) for the full schema and download steps.
 
-| Feature | Description |
-|---|---|
-| `tenure` | Months the customer has been with the company |
-| `Contract` | Month-to-month, One year, Two year |
-| `MonthlyCharges` | Monthly billing amount |
-| `TotalCharges` | Total amount billed |
-| `InternetService` | DSL, Fiber optic, or None |
-| `PaymentMethod` | Electronic check, Credit card, etc. |
-| `TechSupport` | Whether customer has tech support |
+## Results
 
----
+All models were evaluated on the same **stratified hold-out test set of 118,839 customers** that was never
+used for training, tuning or choosing the decision threshold.
 
-## Project Structure
+| Model | CV ROC-AUC | Test ROC-AUC | Test PR-AUC | Accuracy | Precision | Recall | F1 |
+|---|---|---|---|---|---|---|---|
+| **XGBoost (tuned)** | 0.9141 ± 0.0012 | **0.9165** | 0.7552 | 0.850 | 0.637 | 0.779 | 0.701 |
+| XGBoost (original notebook settings) | 0.9136 ± 0.0012 | 0.9163 | 0.7546 | 0.850 | 0.636 | 0.780 | 0.701 |
+| LightGBM (tuned) | 0.9136 ± 0.0013 | 0.9161 | 0.7544 | 0.846 | 0.622 | 0.803 | 0.701 |
+| HistGradientBoosting | 0.9135 ± 0.0013 | 0.9161 | 0.7536 | 0.849 | 0.632 | 0.786 | 0.700 |
+| Random Forest | 0.9122 ± 0.0012 | 0.9144 | 0.7493 | 0.847 | 0.627 | 0.788 | 0.698 |
+| Logistic Regression | 0.9072 ± 0.0015 | 0.9084 | 0.7270 | 0.837 | 0.603 | 0.805 | 0.690 |
+
+Precision, recall and F1 are measured at each model's own decision threshold, chosen to maximise F1 on
+training data (0.362 for the final model). Full table and best hyperparameters:
+[`reports/model_comparison.md`](reports/model_comparison.md).
+
+**What the results say**
+
+- **The final model catches 78% of churners**, and 64% of the customers it flags really do churn. Picking
+  customers at random would give 22.5%.
+- **All boosting models are within 0.0005 ROC-AUC of each other.** Tuning improved the original notebook's
+  XGBoost by 0.0002, less than the cross-validation standard deviation (0.0012). The original settings were
+  already close to the ceiling for this data, so the choice of boosting library matters little here.
+- **Logistic Regression is only 0.008 behind the best model.** A simple, fully interpretable model is a
+  realistic alternative when explainability matters more than the last bit of accuracy.
+- **Class weighting did not improve ROC-AUC for any model** (see [`reports/tuning/`](reports/tuning)). ROC-AUC
+  only depends on how customers are ranked, which re-weighting barely changes. The imbalance is handled where it
+  matters instead: a decision threshold of 0.362 rather than 0.5, which trades some precision for higher recall.
+
+<p align="center">
+  <img src="reports/figures/model_comparison.png" width="49%" alt="Model comparison">
+  <img src="reports/figures/roc_curves.png" width="45%" alt="ROC curves">
+</p>
+<p align="center">
+  <img src="reports/figures/confusion_matrix_best.png" width="38%" alt="Confusion matrix of the final model">
+  <img src="reports/figures/feature_importance.png" width="52%" alt="Permutation feature importance">
+</p>
+
+More figures: [precision-recall curves](reports/figures/precision_recall_curves.png),
+[confusion matrices for every model](reports/figures/confusion_matrices.png), and the EDA figures in
+[`reports/figures/`](reports/figures).
+
+## Key insights from the data
+
+From [`notebooks/02_eda.ipynb`](notebooks/02_eda.ipynb):
+
+- **Contract type is the strongest signal.** Month-to-month customers churn at 42%, about 42x the rate of
+  two-year customers (1%). It is also the model's most important feature.
+- **Electronic check payers churn at 49%**, about 6.5x the rate of customers on any other payment method.
+- **No tech support (40%) and fiber optic internet (41.5%)** are the other high-risk segments.
+- **Risk is concentrated in the first year.** 49% of first-year customers churn vs 5% of customers with more
+  than four years of tenure. Churners have been customers for 17 months on average, vs 42 months for
+  customers who stay.
+- **Churners pay about $20 more per month** on average ($81.60 vs $61.29).
+
+<p align="center">
+  <img src="reports/figures/eda_churn_by_category.png" width="80%" alt="Churn rate by segment">
+</p>
+
+## Approach
+
+```mermaid
+flowchart LR
+    A[train.csv<br/>594k rows] --> B[Stratified split<br/>80% train / 20% test]
+    B --> C[GridSearchCV<br/>5-fold stratified CV<br/>on a 150k sample]
+    C --> D[Out-of-fold predictions<br/>CV score + F1 threshold]
+    D --> E[Refit best settings<br/>on 475k training rows]
+    E --> F[Evaluate on the<br/>119k hold-out rows]
+    F --> G[Save best pipeline<br/>+ metadata]
+    G --> H[Gradio app<br/>on Render]
+```
+
+1. **One pipeline for training and inference.** Preprocessing and the model are a single scikit-learn
+   `Pipeline`, saved as one file:
+   - numeric columns: median imputation, then standard scaling
+   - categorical columns: most-frequent imputation, then one-hot encoding (`handle_unknown="ignore"`)
+   - three engineered features: average charge per month, recent price increase, number of add-on services
+2. **Five models**: the original XGBoost and LightGBM, plus Logistic Regression, Random Forest and
+   scikit-learn's HistGradientBoosting.
+3. **Tuning** with `GridSearchCV` and stratified 5-fold cross-validation, optimising ROC-AUC. Each grid includes
+   the original notebook's settings, and class weighting is searched as a hyperparameter.
+4. **Model selection** by cross-validated ROC-AUC. The hold-out test set is only used for the final report.
+5. **Decision threshold** chosen to maximise F1 on out-of-fold training predictions.
+6. **Evaluation**: ROC-AUC, PR-AUC, accuracy, precision, recall, F1, confusion matrices, ROC and PR curves,
+   and permutation feature importance.
+
+**The refactor preserves the original result.** Run through the new pipeline on the same 5 folds, the original
+notebook's XGBoost settings score 0.91582 mean CV AUC vs 0.91574 in the notebook
+([`reports/experiments.md`](reports/experiments.md)).
+
+## Deployment
+
+The demo is a [Gradio](https://www.gradio.app/) app ([`app/app.py`](app/app.py)) running on
+[Render](https://render.com)'s free tier, configured in [`render.yaml`](render.yaml). Every push to `main`
+redeploys it. The app loads the committed pipeline (`models/best_model.joblib`), so it applies exactly the same
+preprocessing as training. [`app/requirements.txt`](app/requirements.txt) pins the library versions the model
+was trained with, and a test fails if they drift apart. An uptime monitor pings the app every 5 minutes, so
+the free instance does not go to sleep.
+
+The app also exposes an API endpoint (`/predict`), usable from Python with `gradio_client`.
+
+## Project structure
 
 ```
-customer-churn-kaggle/
-│
-├── notebook.ipynb          # Main Colab notebook (EDA + Model)
-├── submission.csv          # Final Kaggle submission file
-├── train.csv               # Training data (from Kaggle)
-├── test.csv                # Test data (from Kaggle)
-├── sample_submission.csv   # Submission format reference
-└── README.md               # Project documentation
+├── app/
+│   ├── app.py                  Gradio demo
+│   └── requirements.txt        pinned inference dependencies for deployment
+├── config.yaml                 paths, seed, split, CV and hyperparameter grids
+├── data/                       raw Kaggle CSVs (not committed; see data/README.md)
+├── models/                     best_model.joblib + metadata.json (threshold, metrics, versions)
+├── notebooks/
+│   ├── 01_original_colab_notebook.ipynb   the original analysis, unchanged
+│   └── 02_eda.ipynb                       cleaned exploratory analysis
+├── render.yaml                 Render deployment config
+├── reports/                    model comparison, tuning results, experiments log
+│   └── figures/                all plots
+├── scripts/feature_ablation.py parity check vs the notebook + engineered-feature ablation
+├── src/
+│   ├── config.py               loads config.yaml
+│   ├── data.py                 loading, target encoding, stratified split
+│   ├── features.py             feature schema + engineered features
+│   ├── preprocessing.py        ColumnTransformer pipeline
+│   ├── models.py               model registry
+│   ├── train.py                tuning, evaluation, model selection   (python -m src.train)
+│   ├── evaluate.py             metrics, threshold, report figures
+│   ├── predict.py              single-customer and batch prediction  (python -m src.predict)
+│   └── plot_style.py           shared chart style
+├── submissions/                Kaggle submission files
+└── tests/                      pytest suite (runs on synthetic data, no download needed)
 ```
 
----
+## How to run
 
-## Methodology
-
-### 1. Exploratory Data Analysis (EDA)
-- Visualized churn distribution across all key features
-- Identified strongest churn signals:
-  - Month-to-month contracts → **42% churn rate**
-  - Electronic check payment → **49% churn rate**
-  - No tech support → **40% churn rate**
-  - Fiber optic internet → **41.5% churn rate**
-
-### 2. Data Preprocessing
-- Dropped irrelevant `id` column
-- Encoded binary Yes/No columns to 1/0
-- Converted `TotalCharges` to numeric, imputed missing values with median
-- Applied one-hot encoding to multi-class categorical columns
-- Aligned train and test columns after encoding
-
-### 3. Model Training
-- Trained **XGBoost** and **LightGBM** classifiers
-- Used **5-Fold Stratified Cross-Validation** for reliable evaluation
-- Selected XGBoost as the final model based on CV performance
-
-### 4. Evaluation
-
-| Model | Mean CV AUC |
-|---|---|
-| XGBoost | **0.9157** |
-| LightGBM | 0.9156 |
-
----
-
-## Model Configuration
-
-```python
-XGBClassifier(
-    n_estimators=300,
-    learning_rate=0.05,
-    max_depth=6,
-    eval_metric='auc',
-    random_state=42,
-    n_jobs=-1
-)
-```
-
----
-
-## How to Reproduce
-
-### 1. Clone this repository
 ```bash
-git clone https://github.com/your-username/customer-churn-kaggle.git
-cd customer-churn-kaggle
+git clone https://github.com/aviraj1805/Customer-Churn-Prediction.git
+cd Customer-Churn-Prediction
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-### 2. Install dependencies
+The trained model is committed, so the demo and tests work straight after cloning:
+
 ```bash
-pip install numpy pandas matplotlib seaborn scikit-learn xgboost lightgbm
+python app/app.py                  # demo at http://127.0.0.1:7860
+pytest                             # test suite
 ```
 
-### 3. Download dataset from Kaggle
+To retrain, download the data into `data/raw/` ([instructions](data/README.md)), then:
+
 ```bash
-kaggle competitions download -c playground-series-s6e3
+python -m src.train --quick        # ~3 min smoke run, writes to .quick_run/
+python -m src.train                # full run, ~15-20 min on 12 CPU cores
+python -m src.predict              # Kaggle submission -> submissions/submission.csv
+python -m src.predict --input customers.csv --output scored.csv
+python -m scripts.feature_ablation # reproduce the original notebook's baseline
 ```
 
-### 4. Run the notebook
-Open `notebook.ipynb` in Google Colab or Jupyter and run all cells.
+All settings (seed, split, CV folds, grids) are in [`config.yaml`](config.yaml). Seeds are fixed: rerunning the
+full training reproduces every metric exactly.
 
----
+## Tech stack
 
-## Key Insights
-
-- **Contract type** is the strongest predictor of churn
-- Customers on **month-to-month contracts** are 42x more likely to churn than two-year contract holders
-- **Electronic check** users have nearly 6x higher churn than other payment methods
-- Customers with **lower tenure** (< 17 months) are at the highest risk
-- Churned customers pay **~$20 more per month** on average
-
----
-
-## Tech Stack
-
-- **Language:** Python 3.10
-- **Environment:** Google Colab
-- **Libraries:** NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, XGBoost, LightGBM
-
----
+Python 3.10 · pandas · NumPy · scikit-learn · XGBoost · LightGBM · Matplotlib · Seaborn · pytest ·
+Gradio · Render
 
 ## Author
+
 **Aviraj Virape**
-- GitHub: [@avidada35](https://github.com/avidada35)
+- GitHub: [@aviraj1805](https://github.com/aviraj1805)
 - Kaggle: [@avirajvirape](https://www.kaggle.com/avirajvirape)
 - LinkedIn: [Aviraj Virape](https://www.linkedin.com/in/aviraj-virape-667a31217/)
 
----
+## License
 
-## 📄 License
-
-This project is built for educational purposes.
-Dataset sourced from [Kaggle Playground Series S6E3](https://www.kaggle.com/competitions/playground-series-s6e3) under **CC BY 4.0** license.
+Built for educational purposes. Dataset from
+[Kaggle Playground Series S6E3](https://www.kaggle.com/competitions/playground-series-s6e3) under CC BY 4.0.

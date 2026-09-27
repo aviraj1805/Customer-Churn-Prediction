@@ -25,7 +25,9 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - Predict: `.venv\Scripts\python -m src.predict` (Kaggle submission) or `--input x.csv --output y.csv`
 - Test: `.venv\Scripts\python -m pytest`
 - App: `.venv\Scripts\python app/app.py`
-- Deploy: `.venv\Scripts\python scripts/deploy_space.py`
+- Deploy: push to `main`; Render auto-deploys from `render.yaml` (free plan, kept awake by a 5-min uptime ping).
+  Keep `app/requirements.txt` pinned to the training versions (tests/test_deployment.py enforces this).
+- Reproduce notebook baseline: `.venv\Scripts\python -m scripts.feature_ablation`
 
 ## Conventions
 - Constraints: no new frameworks beyond the existing stack (pandas, scikit-learn, xgboost, lightgbm, matplotlib/seaborn);
@@ -49,5 +51,5 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 8: cleaned EDA notebook (executed with outputs; figures in reports/figures/eda_*.png)
 - [x] Task 9: Gradio app (app/app.py; screenshot in reports/figures/app_screenshot.png)
 - [~] Task 10: deploy (HF free Gradio Spaces now need PRO -> switched to Render free; render.yaml ready, live URL pending)
-- [ ] Task 11: README + docs
+- [x] Task 11: README + docs
 - [ ] Task 12: final verification, merge to main, push
