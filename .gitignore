@@ -21,8 +21,7 @@ models/*
 !models/best_model.joblib
 !models/metadata.json
 
-# Deployment staging and smoke-run output
-.space_build/
+# Smoke-run output
 .quick_run/
 
 # Claude Code local overrides

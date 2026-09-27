@@ -1,0 +1,23 @@
+# Render Blueprint: runs the Gradio demo (app/app.py) as a free web service.
+# Setup: Render dashboard -> New -> Blueprint -> connect this GitHub repository -> Apply.
+# Every push to main redeploys automatically.
+services:
+  - type: web
+    name: churn-predictor-aviraj
+    runtime: python
+    plan: free
+    branch: main
+    buildCommand: pip install -r app/requirements.txt
+    startCommand: python app/app.py
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.10.11"
+      # Gradio reads these at launch: listen on all interfaces, on Render's default port.
+      - key: GRADIO_SERVER_NAME
+        value: "0.0.0.0"
+      - key: GRADIO_SERVER_PORT
+        value: "10000"
+      - key: GRADIO_ANALYTICS_ENABLED
+        value: "False"

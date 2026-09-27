@@ -3,7 +3,7 @@
 ## Purpose
 Customer churn prediction for Kaggle Playground Series S6E3 (telecom customers, binary target `Churn`, metric ROC-AUC).
 Refactored from a single Colab notebook into a production-style ML project: scikit-learn pipelines, tuned models,
-evaluation reports, tests, and a Gradio demo on Hugging Face Spaces. Portfolio project; the owner must be able to
+evaluation reports, tests, and a Gradio demo on Render (free tier). Portfolio project; the owner must be able to
 explain every design decision in interviews, so prefer clear, standard scikit-learn idioms over clever code.
 
 ## Structure (target)
@@ -14,8 +14,8 @@ src/                 config, data, features, preprocessing, models, train, evalu
 models/              best_model.joblib + metadata.json (only these are tracked)
 reports/             model comparison table; figures/ for all plots
 submissions/         Kaggle submission files
-app/                 Gradio app for Hugging Face Spaces
-scripts/             deployment helper
+app/                 Gradio app + its pinned inference requirements (deployed via render.yaml)
+scripts/             feature_ablation.py (parity check vs original notebook)
 tests/               pytest suite (uses synthetic data, no Kaggle download needed)
 ```
 
@@ -48,6 +48,6 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 7: predict module + tests
 - [x] Task 8: cleaned EDA notebook (executed with outputs; figures in reports/figures/eda_*.png)
 - [x] Task 9: Gradio app (app/app.py; screenshot in reports/figures/app_screenshot.png)
-- [ ] Task 10: deploy to Hugging Face Spaces
+- [~] Task 10: deploy (HF free Gradio Spaces now need PRO -> switched to Render free; render.yaml ready, live URL pending)
 - [ ] Task 11: README + docs
 - [ ] Task 12: final verification, merge to main, push

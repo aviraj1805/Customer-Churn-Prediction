@@ -1,0 +1,10 @@
+# Inference-only dependencies for the deployed app. Pinned to the training environment:
+# a pickled scikit-learn pipeline must be loaded with the same library versions it was saved with.
+scikit-learn==1.7.1
+numpy==2.2.6
+pandas==2.3.1
+joblib==1.5.1
+PyYAML==6.0.2
+# Same `xgboost` module as in training, without ~300 MB of GPU libraries.
+xgboost-cpu==3.2.0
+gradio==5.49.1
