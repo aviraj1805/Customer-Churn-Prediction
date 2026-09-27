@@ -31,6 +31,7 @@ def apply_style() -> None:
         "xtick.labelcolor": INK_SECONDARY,
         "ytick.labelcolor": INK_SECONDARY,
         "axes.grid": True,
+        "axes.axisbelow": True,  # gridlines behind bars and markers
         "axes.spines.top": False,
         "axes.spines.right": False,
         "grid.color": GRID,

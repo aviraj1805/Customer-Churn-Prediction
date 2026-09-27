@@ -46,7 +46,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 5: training entry point (`--quick` writes to .quick_run/, ~3 min)
 - [x] Task 6: evaluation + full training run (best: tuned XGBoost, test AUC 0.9165; reruns reproduce exactly)
 - [x] Task 7: predict module + tests
-- [ ] Task 8: cleaned EDA notebook
+- [x] Task 8: cleaned EDA notebook (executed with outputs; figures in reports/figures/eda_*.png)
 - [ ] Task 9: Gradio app
 - [ ] Task 10: deploy to Hugging Face Spaces
 - [ ] Task 11: README + docs
