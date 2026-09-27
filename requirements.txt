@@ -1,0 +1,20 @@
+# Core ML stack
+numpy==2.2.6
+pandas==2.3.1
+scikit-learn==1.7.1
+xgboost==3.2.0
+lightgbm==4.7.0
+joblib==1.5.1
+PyYAML==6.0.2
+
+# Plots and EDA
+matplotlib==3.10.9
+seaborn==0.13.2
+
+# Demo app (deployment)
+gradio==5.49.1
+
+# Development: tests and executing notebooks
+pytest==8.4.2
+nbconvert==7.17.1
+ipykernel==7.3.0

@@ -38,7 +38,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 
 ## Status
 - [x] Task 0: setup (branch `refactor/ml-pipeline`, .gitignore, .venv, attribution settings)
-- [ ] Task 1: restructure folders, data, requirements, config
+- [x] Task 1: restructure folders, data, requirements, config
 - [ ] Task 2: data module + tests
 - [ ] Task 3: features + preprocessing pipeline + tests
 - [ ] Task 4: model registry + grids

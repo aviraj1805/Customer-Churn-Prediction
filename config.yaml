@@ -1,0 +1,20 @@
+# Central configuration: every path, seed and tunable parameter lives here.
+# Paths are relative to the repository root.
+
+seed: 42
+
+paths:
+  raw_train: data/raw/train.csv
+  raw_test: data/raw/test.csv
+  sample_submission: data/raw/sample_submission.csv
+  model: models/best_model.joblib
+  metadata: models/metadata.json
+  reports_dir: reports
+  figures_dir: reports/figures
+  submission: submissions/submission.csv
+
+data:
+  id_column: id
+  target: Churn
+  positive_label: "Yes"
+  test_size: 0.2          # stratified hold-out split used for the final evaluation
