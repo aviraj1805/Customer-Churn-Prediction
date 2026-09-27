@@ -19,6 +19,11 @@ FIELD_LABELS = {
     "AvgChargePerMonth": "Avg. charge per month (derived)", "ChargeIncrease": "Recent price change (derived)",
     "NumAddonServices": "Number of add-ons (derived)", "TenureBand": "Tenure band (months)",
 }
+MODEL_COLORS = {  # same palette as src/plot_style.py; the untuned baseline and chance recede in gray
+    "Logistic Regression": "#2a78d6", "Random Forest": "#eb6834", "HistGradientBoosting": "#1baf7a",
+    "XGBoost (tuned)": "#eda100", "LightGBM (tuned)": "#e87ba4", "XGBoost (original notebook)": "#898781",
+    "Random guess": "#c3c2b7",
+}
 TIER_COLORS = {"Low": "var(--risk-low)", "Moderate": "var(--risk-moderate)",
                "High": "var(--risk-high)", "Very high": "var(--risk-very-high)"}
 

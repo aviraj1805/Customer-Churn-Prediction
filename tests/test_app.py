@@ -97,3 +97,31 @@ def test_score_batch_without_id_column(app_module, tmp_path):
     pd.read_csv(app_module.SAMPLE_CSV).drop(columns="id").to_csv(tmp_path / "no_id.csv", index=False)
     _, _, top, download = app_module.score_batch(str(tmp_path / "no_id.csv"))
     assert "ID" not in top.columns and len(pd.read_csv(download["value"])) == 40
+
+
+def test_threshold_view_uses_the_nearest_saved_threshold(app_module):
+    cards, matrix, business = app_module.threshold_view(0.362)
+    row = app_module.ART.thresholds.set_index("threshold").loc[0.36]
+    assert f"{int(row['tp']):,}" in matrix and f"{int(row['tn']):,}" in matrix
+    assert app_module.ui.pct(row["recall"]) in cards
+    assert "Out of <b>10,000</b>" in business
+    low_cards, _, _ = app_module.threshold_view(0.1)
+    assert low_cards != cards
+
+
+def test_performance_tables_cover_every_model(app_module):
+    table = app_module.comparison_display()
+    assert len(table) == 6 and table["Model"].str.contains("(deployed)", regex=False).sum() == 1
+    roc = app_module.curve_data("roc")
+    assert {"Random guess", "XGBoost (tuned)"} <= set(roc["model"])
+    assert set(roc["model"]) <= set(app_module.ui.MODEL_COLORS)
+    tradeoff = app_module.tradeoff_data()
+    assert set(tradeoff["metric"]) == {"Precision", "Recall", "F1"} and tradeoff["value"].between(0, 100).all()
+    assert "Decision threshold" in app_module.model_details_md()
+
+
+def test_precision_recall_view_has_a_random_guess_baseline_at_the_churn_rate(app_module):
+    pr = app_module.curve_data("pr")
+    baseline = pr[pr["model"] == "Random guess"]["y"]
+    assert baseline.tolist() == pytest.approx([app_module.ART.churn_rate] * 2)
+    assert set(app_module.CURVE_AXES) == {"roc", "pr"}

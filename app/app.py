@@ -269,6 +269,138 @@ def build_batch_tab():
     sample_button.click(lambda: score_batch(str(SAMPLE_CSV)), None, outputs, api_name=False)
 
 
+# --- Model performance tab -----------------------------------------------------------------------------
+METRIC_COLORS = {"Precision": "#2a78d6", "Recall": "#eb6834", "F1": "#1baf7a"}
+CURVE_AXES = {"roc": ("False positive rate", "True positive rate (recall)"), "pr": ("Recall", "Precision")}
+
+
+def threshold_view(threshold: float):
+    """Precision/recall cards, confusion matrix and campaign view at the chosen cut-off (hold-out data)."""
+    table = ART.thresholds
+    row = table.iloc[(table["threshold"] - threshold).abs().argmin()]
+    cards = ui.kpi_cards_html([
+        ("Precision", ui.pct(row["precision"]), "of flagged customers churn"),
+        ("Recall", ui.pct(row["recall"]), "of churners are caught"),
+        ("F1 score", f"{row['f1']:.3f}", "balance of the two"),
+        ("Flagged", ui.pct(row["flagged_rate"]), "of all customers"),
+    ])
+    return cards, ui.confusion_html(row), ui.business_html(row)
+
+
+def tradeoff_data() -> pd.DataFrame:
+    flagged_any = ART.thresholds[ART.thresholds["flagged_rate"] > 0]  # precision is undefined if nobody is flagged
+    long = flagged_any.melt(id_vars="threshold", value_vars=["precision", "recall", "f1"],
+                               var_name="metric", value_name="value")
+    long["metric"] = long["metric"].map({"precision": "Precision", "recall": "Recall", "f1": "F1"})
+    long["value"] *= 100
+    return long
+
+
+def comparison_display() -> pd.DataFrame:
+    table = ART.comparison
+    deployed = ART.metadata["display_name"]
+    return pd.DataFrame({
+        "Model": [f"{m}  (deployed)" if m == deployed else m for m in table["model"]],
+        "CV ROC-AUC": [f"{m:.4f} ± {s:.4f}" for m, s in zip(table["cv_roc_auc"], table["cv_roc_auc_std"])],
+        "Test ROC-AUC": table["test_roc_auc"].map("{:.4f}".format),
+        "Test PR-AUC": table["test_pr_auc"].map("{:.4f}".format),
+        "Accuracy": table["test_accuracy"].map("{:.1%}".format),
+        "Precision": table["test_precision"].map("{:.1%}".format),
+        "Recall": table["test_recall"].map("{:.1%}".format),
+        "F1": table["test_f1"].map("{:.3f}".format),
+        "Threshold": table["threshold"].map("{:.3f}".format),
+    })
+
+
+def curve_data(curve: str) -> pd.DataFrame:
+    points = ART.curves[ART.curves["curve"] == curve][["model", "x", "y"]]
+    if curve == "roc":
+        chance = pd.DataFrame({"model": "Random guess", "x": [0.0, 1.0], "y": [0.0, 1.0]})
+    else:
+        chance = pd.DataFrame({"model": "Random guess", "x": [0.0, 1.0], "y": [ART.churn_rate] * 2})
+    return pd.concat([points, chance], ignore_index=True)
+
+
+def model_details_md() -> str:
+    md = ART.metadata
+    params = ", ".join(f"`{k}={v}`" for k, v in md["best_params"].items())
+    versions = ", ".join(f"{k} {v}" for k, v in md["library_versions"].items())
+    return (
+        f"**{md['display_name']}** inside a scikit-learn pipeline (imputation, scaling, one-hot encoding, "
+        f"3 engineered features)\n\n"
+        f"- Hyperparameters: {params}\n"
+        f"- Decision threshold: **{md['threshold']:.3f}** (maximises F1 on out-of-fold training predictions)\n"
+        f"- Cross-validated ROC-AUC: **{md['cv_roc_auc_mean']:.4f} ± {md['cv_roc_auc_std']:.4f}** (5 folds)\n"
+        f"- Trained on {md['n_train_rows']:,} customers, tested on {md['n_test_rows']:,} held-out customers\n"
+        f"- Trained {md['trained_at'][:10]} with {versions}"
+    )
+
+
+def build_performance_tab():
+    m = ART.metadata["test_metrics"]
+    gr.HTML(ui.kpi_cards_html([
+        ("ROC-AUC", f"{m['roc_auc']:.4f}", "ranking quality (1 = perfect)"),
+        ("PR-AUC", f"{m['pr_auc']:.4f}", f"vs {ART.churn_rate:.3f} for random"),
+        ("Accuracy", ui.pct(m["accuracy"]), "at the decision threshold"),
+        ("Precision", ui.pct(m["precision"]), "of flagged customers churn"),
+        ("Recall", ui.pct(m["recall"]), "of churners are caught"),
+        ("F1 score", f"{m['f1']:.3f}", "balance of the two"),
+    ]))
+    gr.HTML(f'<div class="caption">All numbers are measured on {ART.metadata["n_test_rows"]:,} customers that were '
+            'held out from training, tuning and threshold selection.</div>')
+
+    if ART.thresholds is not None:
+        gr.Markdown("### Explore the decision threshold")
+        gr.HTML('<div class="caption">A lower threshold catches more churners but sends more offers to customers '
+                'who would have stayed. Move the slider to see the trade-off on the hold-out customers.</div>')
+        initial = threshold_view(THRESHOLD)
+        with gr.Row(equal_height=False):
+            with gr.Column(scale=5):
+                slider = gr.Slider(0.05, 0.95, value=round(THRESHOLD, 2), step=0.01,
+                                   label="Flag customers whose churn probability is at least")
+                reset = gr.Button(f"Back to the recommended threshold ({THRESHOLD:.2f}, best F1)", size="sm")
+                cards = gr.HTML(initial[0])
+                business = gr.HTML(initial[2])
+            with gr.Column(scale=4):
+                matrix = gr.HTML(initial[1])
+                gr.LinePlot(
+                    tradeoff_data(), x="threshold", y="value", color="metric", color_map=METRIC_COLORS,
+                    x_title="Decision threshold", y_title="Score (%)", y_lim=[0, 100], height=250,
+                    tooltip=["threshold", "metric", "value"], show_label=False,
+                )
+        slider.change(threshold_view, slider, [cards, matrix, business], trigger_mode="always_last",
+                      show_progress="hidden", api_name=False)
+        reset.click(lambda: round(THRESHOLD, 2), None, slider, api_name=False)
+
+    if ART.comparison is not None:
+        gr.Markdown("### How the models compare")
+        gr.Dataframe(comparison_display(), interactive=False, wrap=False, show_label=False)
+        gr.HTML('<div class="caption">The four boosting models are within 0.0005 ROC-AUC of each other. Tuning improved '
+                'the original notebook\'s XGBoost by 0.0002, less than the variation between CV folds.</div>')
+    if ART.curves is not None:
+        gr.Markdown("### ROC and precision-recall curves")
+        curve_choice = gr.Radio([("ROC curve", "roc"), ("Precision-recall curve", "pr")], value="roc",
+                                show_label=False)
+        curve_plot = gr.LinePlot(curve_data("roc"), x="x", y="y", color="model", color_map=ui.MODEL_COLORS,
+                                 x_title=CURVE_AXES["roc"][0], y_title=CURVE_AXES["roc"][1], y_lim=[0, 1],
+                                 height=420, show_label=False, tooltip=["model", "x", "y"])
+        gr.HTML('<div class="caption">ROC: higher and further left is better. Precision-recall: the gray line is the '
+                'churn rate, i.e. random guessing. The four boosting models overlap almost exactly.</div>')
+        curve_choice.change(
+            lambda curve: gr.update(value=curve_data(curve), x_title=CURVE_AXES[curve][0], y_title=CURVE_AXES[curve][1]),
+            curve_choice, curve_plot, api_name=False, show_progress="hidden")
+    with gr.Row(equal_height=False):
+        if ART.importance is not None:
+            with gr.Column():
+                gr.Markdown("### What drives predictions overall")
+                gr.HTML(ui.importance_html(ART.importance))
+                gr.HTML('<div class="caption">Permutation importance: how much ROC-AUC drops when a column is '
+                        'shuffled on 20,000 hold-out customers.</div>')
+        with gr.Column():
+            gr.Markdown("### Deployed model")
+            gr.Markdown(model_details_md())
+
+
 # --- App ---------------------------------------------------------------------------------------------
 with gr.Blocks(title="Customer Churn Predictor", theme=THEME, css=CSS) as demo:
     gr.HTML(ui.header_html(ART.metadata))
@@ -277,6 +409,8 @@ with gr.Blocks(title="Customer Churn Predictor", theme=THEME, css=CSS) as demo:
             predict_inputs, predict_outputs = build_predict_tab()
         with gr.Tab("Batch scoring"):
             build_batch_tab()
+        with gr.Tab("Model performance"):
+            build_performance_tab()
     demo.load(analyse, predict_inputs, predict_outputs, api_name=False, show_progress="hidden")
 
 if __name__ == "__main__":
