@@ -40,7 +40,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 0: setup (branch `refactor/ml-pipeline`, .gitignore, .venv, attribution settings)
 - [x] Task 1: restructure folders, data, requirements, config
 - [x] Task 2: data module + tests
-- [ ] Task 3: features + preprocessing pipeline + tests
+- [x] Task 3: features + preprocessing pipeline + tests (parity 0.91582 vs notebook 0.91574; engineered features on)
 - [ ] Task 4: model registry + grids
 - [ ] Task 5: training entry point
 - [ ] Task 6: evaluation + full training run

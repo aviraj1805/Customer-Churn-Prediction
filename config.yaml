@@ -18,3 +18,8 @@ data:
   target: Churn
   positive_label: "Yes"
   test_size: 0.2          # stratified hold-out split used for the final evaluation
+
+features:
+  # Engineered features (AvgChargePerMonth, ChargeIncrease, NumAddonServices).
+  # Ablation on the notebook's 5 folds: XGBoost +0.0001 CV AUC (better on 5/5 folds), LogReg unchanged.
+  engineered: true
