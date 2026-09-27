@@ -57,7 +57,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 7: predict module + tests
 - [x] Task 8: cleaned EDA notebook (executed with outputs; figures in reports/figures/eda_*.png)
 - [x] Task 9: Gradio app (first version; redesigned in Tasks 15-18, screenshots in reports/figures/app_*.png)
-- [~] Task 10: deploy (HF free Gradio Spaces now need PRO -> switched to Render free; render.yaml ready, live URL pending)
+- [x] Task 10: deploy (HF free Gradio Spaces need PRO -> Render free): live at https://churn-predictor-aviraj.onrender.com
 - [x] Task 11: README + docs
 - [x] Task 12: final verification, merge to main, push
 - UI overhaul (branch `feature/ui-overhaul`):
