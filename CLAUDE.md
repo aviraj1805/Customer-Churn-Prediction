@@ -41,7 +41,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 1: restructure folders, data, requirements, config
 - [x] Task 2: data module + tests
 - [x] Task 3: features + preprocessing pipeline + tests (parity 0.91582 vs notebook 0.91574; engineered features on)
-- [ ] Task 4: model registry + grids
+- [x] Task 4: model registry + grids
 - [ ] Task 5: training entry point
 - [ ] Task 6: evaluation + full training run
 - [ ] Task 7: predict module + tests

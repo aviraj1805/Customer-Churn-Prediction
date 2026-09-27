@@ -23,3 +23,67 @@ features:
   # Engineered features (AvgChargePerMonth, ChargeIncrease, NumAddonServices).
   # Ablation on the notebook's 5 folds: XGBoost +0.0001 CV AUC (better on 5/5 folds), LogReg unchanged.
   engineered: true
+
+tuning:
+  cv_folds: 5
+  scoring: roc_auc
+  # GridSearchCV runs on a stratified sample of the training split to keep the search tractable
+  # (~30 min on 12 cores); the winning settings are then refit on the full training split.
+  # null = search on the full training split.
+  sample_size: 150000
+  # Grid candidates are evaluated one at a time; each model uses all CPU cores internally.
+  # This avoids copying the data into 12 worker processes (important with limited RAM).
+  n_jobs: 1
+
+threshold:
+  # Churn/no-churn cut-off chosen to maximise this metric on out-of-fold training predictions.
+  metric: f1
+
+# The original notebook's XGBoost, evaluated untuned as the reference row in the results table.
+baseline:
+  model: xgboost
+  params: {n_estimators: 300, learning_rate: 0.05, max_depth: 6, eval_metric: auc, n_jobs: -1}
+
+# Candidate models. `params` are fixed, `grid` is searched by GridSearchCV.
+# Imbalance (22.5% churn) is handled by searching class weighting as a hyperparameter:
+# class_weight=balanced, or scale_pos_weight=3.44 (= negatives / positives) for XGBoost.
+models:
+  logistic_regression:
+    params: {max_iter: 2000}
+    grid:
+      C: [0.01, 0.1, 1.0, 10.0]
+      class_weight: [null, balanced]
+
+  random_forest:
+    # Depth and leaf size are capped to keep the refit model's memory footprint reasonable.
+    params: {n_estimators: 150, max_features: sqrt, max_samples: 0.5, n_jobs: -1}
+    grid:
+      max_depth: [12, 16]
+      min_samples_leaf: [20, 50]
+      class_weight: [null, balanced_subsample]
+
+  hist_gradient_boosting:
+    params: {max_iter: 300, early_stopping: false}
+    grid:
+      learning_rate: [0.05, 0.1]
+      max_leaf_nodes: [31, 63]
+      l2_regularization: [0.0, 1.0]
+      class_weight: [null, balanced]
+
+  xgboost:
+    # Grid includes the notebook's settings: 300 trees, learning_rate 0.05, max_depth 6.
+    params: {eval_metric: auc, n_jobs: -1}
+    grid:
+      n_estimators: [300, 600]
+      learning_rate: [0.05, 0.1]
+      max_depth: [4, 6]
+      scale_pos_weight: [1.0, 3.44]
+
+  lightgbm:
+    # Grid includes the notebook's settings: 300 trees, learning_rate 0.05, max_depth 6, 31 leaves.
+    params: {max_depth: 6, n_jobs: -1, verbose: -1}
+    grid:
+      n_estimators: [300, 600]
+      learning_rate: [0.05, 0.1]
+      num_leaves: [31, 63]
+      class_weight: [null, balanced]
