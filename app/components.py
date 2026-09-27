@@ -1,4 +1,5 @@
 """HTML building blocks for the app. Pure functions (data in, HTML string out), so they are easy to test."""
+import json
 import math
 from html import escape
 
@@ -7,6 +8,7 @@ import pandas as pd
 from src.predict import risk_tier
 
 REPO_URL = "https://github.com/aviraj1805/Customer-Churn-Prediction"
+APP_URL = "https://churn-predictor-aviraj.onrender.com"
 
 FIELD_LABELS = {
     "gender": "Gender", "SeniorCitizen": "Senior citizen", "Partner": "Has a partner",
@@ -198,3 +200,61 @@ def importance_html(table: pd.DataFrame) -> str:
             f'<div class="num">{row.importance:.4f}</div></div>'
         )
     return '<div class="bars">' + "".join(rows) + "</div>"
+
+
+def about_md(metadata: dict, importance: pd.DataFrame | None, example: dict) -> str:
+    """How it works, a model card and API usage, filled in from the deployed model's metadata."""
+    m = metadata["test_metrics"]
+    gender = ""
+    if importance is not None:
+        imp = importance.set_index("feature")["importance"]
+        gender = (f"- **Fairness check:** gender has no measurable influence on predictions (permutation importance "
+                  f"{imp.get('gender', 0):.4f}); senior-citizen status has a small one "
+                  f"({imp.get('SeniorCitizen', 0):.4f}).\n")
+    payload = json.dumps(example, indent=2)
+    return f"""
+### How it works
+1. **Data:** 594,194 customers from the [Kaggle Playground S6E3](https://www.kaggle.com/competitions/playground-series-s6e3)
+   competition (synthetic telecom data, CC BY 4.0), of whom {metadata.get('churn_rate', 0.225):.1%} churned.
+2. **One pipeline:** imputation, scaling, one-hot encoding and three engineered features live inside the saved
+   scikit-learn pipeline, so this app applies exactly the steps used in training.
+3. **Five models** (Logistic Regression, Random Forest, HistGradientBoosting, XGBoost, LightGBM) tuned with
+   `GridSearchCV` and stratified 5-fold cross-validation on ROC-AUC. The best cross-validated model is deployed.
+4. **Decision threshold** ({metadata['threshold']:.3f}) chosen to maximise F1 on out-of-fold training predictions.
+5. **Honest evaluation** on {metadata['n_test_rows']:,} held-out customers that were never used for any choice.
+6. **Explanations** come from the model's built-in SHAP values. What-if scenarios re-score the customer with one change.
+
+### Model card
+- **Model:** {metadata['display_name']}, trained {metadata['trained_at'][:10]} on {metadata['n_train_rows']:,} customers.
+- **Intended use:** ranking customers for retention outreach, as decision support for a retention team.
+- **Performance (hold-out):** ROC-AUC {m['roc_auc']:.4f}, recall {m['recall']:.1%}, precision {m['precision']:.1%}, F1 {m['f1']:.3f}.
+- **Limitations:** the data is synthetic, so probabilities will not transfer to a real company without retraining on its
+  own data. What-if scenarios show what the model associates with lower risk, not proven causal effects, and they
+  keep the monthly bill fixed.
+{gender}- **Maintenance:** retrain when the churn rate or the customer mix drifts; the decision threshold should be
+  re-chosen with the retention team's budget in mind.
+
+### Use the API
+Every prediction in this app is also available as a JSON API (endpoint `/predict`).
+
+```python
+from gradio_client import Client
+
+client = Client("{APP_URL}/")
+result = client.predict(customer={payload}, api_name="/predict")
+print(result["churn_probability"], result["risk_tier"], result["top_drivers"][:2])
+```
+
+With cURL (two steps: submit, then read the result):
+
+```bash
+EVENT_ID=$(curl -s -X POST {APP_URL}/gradio_api/call/predict \\
+  -H "Content-Type: application/json" \\
+  -d '{{"data": [{json.dumps(example)}]}}' | python -c "import sys, json; print(json.load(sys.stdin)['event_id'])")
+curl -s {APP_URL}/gradio_api/call/predict/$EVENT_ID
+```
+
+### Tech stack
+Python · pandas · scikit-learn · XGBoost · LightGBM · Gradio · Render · pytest ·
+[source code, training pipeline and tests on GitHub]({REPO_URL})
+"""

@@ -7,6 +7,7 @@ import os
 import sys
 import tempfile
 import time
+from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,6 +41,7 @@ THRESHOLD = ART.metadata["threshold"]
 log.info("Loaded %s (threshold %.3f) in %.1fs", ART.metadata["display_name"], THRESHOLD, time.perf_counter() - started)
 
 DEFAULT_CUSTOMER = {**next(iter(EXAMPLE_CUSTOMERS.values())), "TotalCharges": 0}
+EXAMPLE_API_CUSTOMER = next(iter(EXAMPLE_CUSTOMERS.values()))
 FORM_SECTIONS = {  # section -> rows of inputs
     "Account": [["tenure", "MonthlyCharges", "TotalCharges"], ["Contract", "PaymentMethod", "PaperlessBilling"]],
     "Services": [["PhoneService", "MultipleLines", "InternetService"],
@@ -401,6 +403,122 @@ def build_performance_tab():
             gr.Markdown(model_details_md())
 
 
+# --- Data insights tab -----------------------------------------------------------------------------------
+SEGMENT_FIELDS = ["Contract", "PaymentMethod", "InternetService", "TechSupport", "OnlineSecurity", "OnlineBackup",
+                  "DeviceProtection", "StreamingTV", "StreamingMovies", "PaperlessBilling", "MultipleLines",
+                  "PhoneService", "SeniorCitizen", "Partner", "Dependents", "gender"]
+
+
+def segment_rates(field: str) -> pd.DataFrame:
+    return ART.segments[ART.segments["feature"] == field]
+
+
+def pooled_rate(field: str, levels: list[str]) -> float:
+    """Churn rate across several levels of a segment, weighted by customers."""
+    seg = segment_rates(field)
+    seg = seg[seg["level"].isin(levels)]
+    return float((seg["churn_rate"] * seg["customers"]).sum() / seg["customers"].sum())
+
+
+def segment_view(field: str):
+    seg = segment_rates(field)
+    data = pd.DataFrame({"level": seg["level"], "churn_rate": seg["churn_rate"] * 100, "customers": seg["customers"]})
+    high, low = seg.loc[seg["churn_rate"].idxmax()], seg.loc[seg["churn_rate"].idxmin()]
+    note = (f'<div class="caption"><b>{escape(high["level"])}</b> churns at <b>{ui.pct(high["churn_rate"])}</b> '
+            f'({high["churn_rate"] / ART.churn_rate:.1f}x the average) and <b>{escape(low["level"])}</b> at '
+            f'<b>{ui.pct(low["churn_rate"])}</b>. Based on {int(seg["customers"].sum()):,} customers.</div>')
+    return gr.update(value=data, x_title=ui.FIELD_LABELS[field]), note
+
+
+def key_findings_md() -> str:
+    contract = segment_rates("Contract").set_index("level")["churn_rate"]
+    payment = segment_rates("PaymentMethod").set_index("level")["churn_rate"]
+    other_payment = pooled_rate("PaymentMethod", [p for p in payment.index if p != "Electronic check"])
+    first_year = pooled_rate("TenureBand", ["1-6", "7-12"])
+    after_four = pooled_rate("TenureBand", ["49-54", "55-60", "61-66", "67-72"])
+    internet = segment_rates("InternetService").set_index("level")["churn_rate"]
+    support = segment_rates("TechSupport").set_index("level")["churn_rate"]
+    senior = segment_rates("SeniorCitizen").set_index("level")["churn_rate"]
+    return "\n".join([
+        f"- **Contract type is the strongest signal.** Month-to-month customers churn at "
+        f"{ui.pct(contract['Month-to-month'])}, vs {ui.pct(contract['Two year'])} on two-year contracts "
+        f"({contract['Month-to-month'] / contract['Two year']:.0f}x).",
+        f"- **Electronic check payers churn at {ui.pct(payment['Electronic check'])}**, "
+        f"{payment['Electronic check'] / other_payment:.1f}x the rate of every other payment method.",
+        f"- **Risk is concentrated in the first year:** {ui.pct(first_year)} churn in months 1-12 vs "
+        f"{ui.pct(after_four)} after four years.",
+        f"- **Fiber optic internet ({ui.pct(internet['Fiber optic'])}) and no tech support "
+        f"({ui.pct(support['No'])})** are the other high-risk segments.",
+        f"- **Senior citizens churn at {ui.pct(senior['Yes'])}** vs {ui.pct(senior['No'])} for other customers, "
+        "yet the model barely relies on this column: seniors are far more often on month-to-month contracts, "
+        "fiber and electronic check, so those columns already carry the signal.",
+    ])
+
+
+def build_insights_tab():
+    segments = ART.segments[ART.segments["feature"] != "TenureBand"]
+    large = segments[segments["customers"] >= 1_000]
+    riskiest, safest = large.loc[large["churn_rate"].idxmax()], large.loc[large["churn_rate"].idxmin()]
+    gr.HTML(ui.kpi_cards_html([
+        ("Customers analysed", f"{int(segment_rates('Contract')['customers'].sum()):,}", "Kaggle Playground S6E3"),
+        ("Overall churn rate", ui.pct(ART.churn_rate), "about 1 in 4.4 customers"),
+        ("Riskiest segment", ui.pct(riskiest["churn_rate"]),
+         f"{ui.FIELD_LABELS[riskiest['feature']]}: {riskiest['level']}"),
+        ("Safest segment", ui.pct(safest["churn_rate"]), f"{ui.FIELD_LABELS[safest['feature']]}: {safest['level']}"),
+    ]))
+    with gr.Row(equal_height=False):
+        with gr.Column(scale=3):
+            gr.Markdown("### Churn rate by segment")
+            field = gr.Dropdown([(ui.FIELD_LABELS[f], f) for f in SEGMENT_FIELDS], value="Contract",
+                                label="Segment", interactive=True)
+            initial_plot, initial_note = segment_view("Contract")
+            segment_plot = gr.BarPlot(
+                initial_plot["value"], x="level", y="churn_rate", sort="-y", x_title=ui.FIELD_LABELS["Contract"],
+                y_title="Churn rate (%)",
+                height=300, tooltip=["level", "churn_rate", "customers"], show_label=False,
+            )
+            segment_note = gr.HTML(initial_note)
+        with gr.Column(scale=2):
+            gr.Markdown("### Key findings")
+            gr.Markdown(key_findings_md())
+    gr.Markdown("### Churn rate by tenure")
+    tenure = segment_rates("TenureBand")
+    gr.BarPlot(
+        pd.DataFrame({"months": tenure["level"], "churn_rate": tenure["churn_rate"] * 100,
+                      "customers": tenure["customers"]}),
+        x="months", y="churn_rate", sort=list(tenure["level"]), x_title="Tenure (months)",
+        y_title="Churn rate (%)", height=260, tooltip=["months", "churn_rate", "customers"], show_label=False,
+    )
+    field.change(segment_view, field, [segment_plot, segment_note], api_name=False, show_progress="hidden")
+
+
+# --- About & API tab --------------------------------------------------------------------------------------
+def predict_api(customer: dict) -> dict:
+    """Score one customer.
+
+    Args:
+        customer: the 19 input fields, e.g. {"gender": "Female", "SeniorCitizen": 0, "tenure": 2, ...}.
+            TotalCharges may be 0 or left out to estimate it as tenure x MonthlyCharges.
+    Returns:
+        churn_probability, will_churn, risk_tier, threshold and the five strongest drivers.
+    """
+    customer = dict(customer)
+    try:
+        if not customer.get("TotalCharges") and {"tenure", "MonthlyCharges"} <= customer.keys():
+            customer["TotalCharges"] = float(customer["tenure"]) * float(customer["MonthlyCharges"])
+        result = predict_customer(customer, ART.pipeline, THRESHOLD)
+        explanation = drivers(ART.pipeline, customer)
+    except (ValueError, TypeError) as err:
+        raise gr.Error(str(err)) from err
+    result["will_churn"] = bool(result["will_churn"])
+    result["top_drivers"] = [] if explanation is None else [
+        {"field": r.field, "value": r.value if isinstance(r.value, str) else float(r.value),
+         "contribution": round(float(r.contribution), 4)}
+        for r in explanation.head(5).itertuples()
+    ]
+    return result
+
+
 # --- App ---------------------------------------------------------------------------------------------
 with gr.Blocks(title="Customer Churn Predictor", theme=THEME, css=CSS) as demo:
     gr.HTML(ui.header_html(ART.metadata))
@@ -411,6 +529,12 @@ with gr.Blocks(title="Customer Churn Predictor", theme=THEME, css=CSS) as demo:
             build_batch_tab()
         with gr.Tab("Model performance"):
             build_performance_tab()
+        if ART.segments is not None:
+            with gr.Tab("Data insights"):
+                build_insights_tab()
+        with gr.Tab("About & API"):
+            gr.Markdown(ui.about_md(ART.metadata, ART.importance, EXAMPLE_API_CUSTOMER))
+    gr.api(predict_api, api_name="predict")
     demo.load(analyse, predict_inputs, predict_outputs, api_name=False, show_progress="hidden")
 
 if __name__ == "__main__":

@@ -125,3 +125,34 @@ def test_precision_recall_view_has_a_random_guess_baseline_at_the_churn_rate(app
     baseline = pr[pr["model"] == "Random guess"]["y"]
     assert baseline.tolist() == pytest.approx([app_module.ART.churn_rate] * 2)
     assert set(app_module.CURVE_AXES) == {"roc", "pr"}
+
+
+def test_segment_view_and_findings_come_from_the_saved_rates(app_module):
+    plot, note = app_module.segment_view("PaymentMethod")
+    data = plot["value"]
+    assert set(data["level"]) == set(app_module.CATEGORY_LEVELS["PaymentMethod"])
+    assert plot["x_title"] == "Payment method" and "Electronic check" in note
+    findings = app_module.key_findings_md()
+    assert "Month-to-month customers churn at 42.1%" in findings and "Senior citizens churn at 50.0%" in findings
+
+
+def test_json_api_returns_serialisable_prediction_with_drivers(app_module):
+    import json
+
+    import gradio as gr
+
+    customer = {k: v for k, v in app_module.EXAMPLE_API_CUSTOMER.items() if k != "TotalCharges"}
+    result = app_module.predict_api(customer)  # TotalCharges left out -> estimated
+    assert json.loads(json.dumps(result)) == result
+    assert result["risk_tier"] == "Very high" and result["will_churn"] is True
+    assert len(result["top_drivers"]) == 5 and result["top_drivers"][0]["field"] in app_module.RAW_FEATURES
+    with pytest.raises(gr.Error, match="Contract"):
+        app_module.predict_api({**customer, "Contract": "Weekly"})
+    with pytest.raises(gr.Error):
+        app_module.predict_api({"tenure": "abc", "MonthlyCharges": 20})
+
+
+def test_about_page_documents_the_api_and_model_card(app_module):
+    md = app_module.ui.about_md(app_module.ART.metadata, app_module.ART.importance, app_module.EXAMPLE_API_CUSTOMER)
+    assert "Model card" in md and "Limitations" in md and "Fairness check" in md
+    assert 'api_name="/predict"' in md and "gradio_api/call/predict" in md
