@@ -56,7 +56,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - UI overhaul (branch `feature/ui-overhaul`):
   - [x] Task 13: report tables for the app (threshold_analysis, curves, segment_churn_rates) + retrain (identical metrics)
   - [x] Task 14: src/explain.py (SHAP drivers, retention what-ifs, tenure outlook)
-  - [ ] Task 15+16: app restructure (theme, components, artifacts), live Predict tab, Batch scoring tab
+  - [x] Task 15+16: app restructure (theme, components, artifacts), live Predict tab, Batch scoring tab
   - [ ] Task 17: Model performance tab (threshold explorer)
   - [ ] Task 18: Data insights + About/API tabs, JSON API
   - [ ] Task 19: polish, memory check, screenshots, docs, merge + push

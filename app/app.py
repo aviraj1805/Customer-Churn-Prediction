@@ -1,135 +1,283 @@
-"""Gradio demo: enter a customer's details and get their churn probability.
+"""Customer Churn Predictor: Gradio web app.
 
-Run locally with `python app/app.py`, then open http://127.0.0.1:7860.
-The same file runs on Hugging Face Spaces (see scripts/deploy_space.py).
+Run locally with `python app/app.py` and open http://127.0.0.1:7860. Deployed on Render (see render.yaml).
 """
+import logging
+import os
 import sys
+import tempfile
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+os.environ.setdefault("GRADIO_ANALYTICS_ENABLED", "False")  # no usage telemetry from the app
 
 import gradio as gr  # noqa: E402
+import pandas as pd  # noqa: E402
 
-from src.features import CATEGORY_LEVELS, RAW_FEATURES  # noqa: E402
-from src.predict import EXAMPLE_CUSTOMERS, load_model, predict_customer  # noqa: E402
+from app import components as ui  # noqa: E402
+from app.artifacts import load_artifacts  # noqa: E402
+from app.theme import CSS, THEME  # noqa: E402
+from src.data import load_raw  # noqa: E402
+from src.explain import drivers, retention_scenarios, tenure_outlook  # noqa: E402
+from src.features import CATEGORY_LEVELS, INTERNET_ADDONS, RAW_FEATURES  # noqa: E402
+from src.predict import (  # noqa: E402
+    EXAMPLE_CUSTOMERS,
+    RISK_TIERS,
+    predict_customer,
+    score_frame,
+    unknown_categories,
+)
 
-PIPELINE, METADATA = load_model()
-THRESHOLD = METADATA["threshold"]
-REPO_URL = "https://github.com/aviraj1805/Customer-Churn-Prediction"
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+logging.getLogger("httpx").setLevel(logging.WARNING)
+log = logging.getLogger("churn-app")
 
-# Segment-level churn rates from the exploratory analysis (notebooks/02_eda.ipynb).
-RISK_TRAITS = [
-    (lambda c: c["Contract"] == "Month-to-month", "Month-to-month contract (42% churn vs 1% on two-year)"),
-    (lambda c: c["PaymentMethod"] == "Electronic check", "Pays by electronic check (49% churn)"),
-    (lambda c: c["InternetService"] == "Fiber optic", "Fiber optic internet (41.5% churn)"),
-    (lambda c: c["InternetService"] != "No" and c["TechSupport"] == "No", "No tech support (40% churn)"),
-    (lambda c: c["tenure"] <= 12, "In the first year with the company (about 50% churn)"),
-]
+started = time.perf_counter()
+ART = load_artifacts()
+THRESHOLD = ART.metadata["threshold"]
+log.info("Loaded %s (threshold %.3f) in %.1fs", ART.metadata["display_name"], THRESHOLD, time.perf_counter() - started)
 
-LABELS = {
-    "gender": "Gender", "SeniorCitizen": "Senior citizen", "Partner": "Has a partner",
-    "Dependents": "Has dependents", "tenure": "Tenure (months)", "Contract": "Contract",
-    "PaperlessBilling": "Paperless billing", "PaymentMethod": "Payment method",
-    "MonthlyCharges": "Monthly charges ($)", "TotalCharges": "Total charges to date ($)",
-    "PhoneService": "Phone service", "MultipleLines": "Multiple lines", "InternetService": "Internet service",
-    "OnlineSecurity": "Online security", "OnlineBackup": "Online backup", "DeviceProtection": "Device protection",
-    "TechSupport": "Tech support", "StreamingTV": "Streaming TV", "StreamingMovies": "Streaming movies",
-}
-SECTIONS = {  # section -> rows of inputs
+DEFAULT_CUSTOMER = {**next(iter(EXAMPLE_CUSTOMERS.values())), "TotalCharges": 0}
+FORM_SECTIONS = {  # section -> rows of inputs
     "Account": [["tenure", "MonthlyCharges", "TotalCharges"], ["Contract", "PaymentMethod", "PaperlessBilling"]],
     "Services": [["PhoneService", "MultipleLines", "InternetService"],
                  ["OnlineSecurity", "OnlineBackup", "DeviceProtection"],
                  ["TechSupport", "StreamingTV", "StreamingMovies"]],
     "Demographics": [["gender", "SeniorCitizen", "Partner", "Dependents"]],
 }
-# The form opens pre-filled with the first example; total charges left empty to show the estimate.
-DEFAULT_CUSTOMER = {**next(iter(EXAMPLE_CUSTOMERS.values())), "TotalCharges": None}
+OUTLOOK_COLORS = {"This customer": "#4f46e5", "Decision threshold": "#898781"}
 
 
-def make_input(feature: str):
-    label, default = LABELS[feature], DEFAULT_CUSTOMER[feature]
-    if feature == "tenure":
-        return gr.Slider(1, 72, value=default, step=1, label=label)
-    if feature == "MonthlyCharges":
-        return gr.Slider(18, 120, value=default, step=0.5, label=label)
-    if feature == "TotalCharges":
-        return gr.Number(value=default, label=label, minimum=0,
-                         info="Leave empty (or 0) to estimate as tenure x monthly charges")
-    if feature == "SeniorCitizen":
-        return gr.Radio(["No", "Yes"], value="Yes" if default else "No", label=label)
-    levels = CATEGORY_LEVELS[feature]
-    if len(levels) == 2:
-        return gr.Radio(levels, value=default, label=label)
-    return gr.Dropdown(levels, value=default, label=label)
+# --- Form helpers ------------------------------------------------------------------------------------
+def dependent_choices(field: str, parent_value: str) -> list[str]:
+    """Add-ons need internet, multiple lines need phone service: offer only the options that make sense."""
+    if field in INTERNET_ADDONS:
+        return ["No internet service"] if parent_value == "No" else ["No", "Yes"]
+    if field == "MultipleLines":
+        return ["No phone service"] if parent_value == "No" else ["No", "Yes"]
+    return CATEGORY_LEVELS[field]
+
+
+def dependent_update(field: str, parent_value: str, current: str):
+    choices = dependent_choices(field, parent_value)
+    return gr.update(choices=choices, value=current if current in choices else choices[0],
+                     interactive=len(choices) > 1)
+
+
+def make_input(field: str, customer: dict):
+    label, value = ui.FIELD_LABELS[field], customer[field]
+    if field == "tenure":
+        return gr.Slider(1, 72, value=value, step=1, label=label, info="Months with the company")
+    if field == "MonthlyCharges":
+        return gr.Slider(18, 120, value=value, step=0.5, label=label, info="Current monthly bill")
+    if field == "TotalCharges":
+        return gr.Number(value=value, minimum=0, label=label, info="Leave at 0 to estimate as tenure x monthly bill")
+    if field == "SeniorCitizen":
+        return gr.Radio(["No", "Yes"], value="Yes" if value else "No", label=label)
+    if field == "PaymentMethod":
+        return gr.Dropdown(CATEGORY_LEVELS[field], value=value, label=label)
+    parent = {"MultipleLines": "PhoneService", **{f: "InternetService" for f in INTERNET_ADDONS}}.get(field)
+    choices = dependent_choices(field, customer[parent]) if parent else CATEGORY_LEVELS[field]
+    return gr.Radio(choices, value=value, label=label, interactive=len(choices) > 1)
+
+
+def to_customer(values) -> tuple[dict, bool]:
+    """UI values (in RAW_FEATURES order) -> model input; also says whether TotalCharges was estimated."""
+    customer = dict(zip(RAW_FEATURES, values))
+    customer["SeniorCitizen"] = 1 if customer["SeniorCitizen"] == "Yes" else 0
+    estimated = not customer["TotalCharges"]  # empty or 0 is impossible for tenure >= 1
+    if estimated:
+        customer["TotalCharges"] = customer["tenure"] * customer["MonthlyCharges"]
+    return customer, estimated
 
 
 def to_ui_values(customer: dict) -> list:
-    """Customer dict -> values in RAW_FEATURES order, as the UI components expect them."""
     return [("Yes" if customer[f] else "No") if f == "SeniorCitizen" else customer[f] for f in RAW_FEATURES]
 
 
-def predict(*values):
-    customer = dict(zip(RAW_FEATURES, values))
-    customer["SeniorCitizen"] = 1 if customer["SeniorCitizen"] == "Yes" else 0
-    if not customer["TotalCharges"]:  # empty or 0: impossible for tenure >= 1, so estimate it
-        customer["TotalCharges"] = customer["tenure"] * customer["MonthlyCharges"]
+# --- Predict tab ---------------------------------------------------------------------------------------
+def analyse(*values):
+    """Everything the Predict tab shows for one customer: gauge, verdict, drivers, what-ifs, tenure outlook."""
+    customer, estimated = to_customer(values)
     try:
-        result = predict_customer(customer, PIPELINE, THRESHOLD)
+        result = predict_customer(customer, ART.pipeline, THRESHOLD)
     except ValueError as err:
         raise gr.Error(str(err)) from err
-
     proba = result["churn_probability"]
-    if result["will_churn"]:
-        verdict = f"### Likely to churn\nChurn probability **{proba:.1%}** is above the decision threshold of {THRESHOLD:.1%}."
-    else:
-        verdict = f"### Unlikely to churn\nChurn probability **{proba:.1%}** is below the decision threshold of {THRESHOLD:.1%}."
-    traits = [text for check, text in RISK_TRAITS if check(customer)]
-    traits_md = "\n".join(f"- {t}" for t in traits) if traits else "- None of the main high-risk traits"
-    details = (
-        f"{verdict}\n\n**High-risk traits present** (from the data analysis):\n{traits_md}\n\n"
-        f"<sub>The threshold was chosen to balance precision and recall (maximum F1) on training data. "
-        f"Customers above it are the ones worth a retention offer.</sub>"
+
+    outlook = tenure_outlook(ART.pipeline, customer)
+    plot_data = pd.concat([
+        pd.DataFrame({"tenure": outlook["tenure"], "churn_probability": outlook["churn_probability"] * 100,
+                      "series": "This customer"}),
+        pd.DataFrame({"tenure": [1, 72], "churn_probability": [THRESHOLD * 100] * 2, "series": "Decision threshold"}),
+    ], ignore_index=True)
+    later = min(int(customer["tenure"]) + 12, 72)
+    later_proba = outlook.loc[outlook["tenure"] == later, "churn_probability"].iloc[0]
+    outlook_note = (f'<div class="caption">Same plan and bill, only tenure changes. If this customer stays until month '
+                    f'{later}, predicted risk goes from <b>{ui.pct(proba)}</b> to <b>{ui.pct(later_proba)}</b>.</div>')
+    if estimated:
+        outlook_note += (f'<div class="caption">Total charges estimated as '
+                         f'${customer["TotalCharges"]:,.2f} (tenure x monthly bill).</div>')
+
+    return (
+        ui.gauge_html(proba, THRESHOLD),
+        ui.verdict_html(proba, THRESHOLD, ART.churn_rate),
+        ui.drivers_html(drivers(ART.pipeline, customer)),
+        ui.scenarios_html(retention_scenarios(ART.pipeline, customer), proba),
+        plot_data,
+        outlook_note,
     )
-    return {"Churn": proba, "No churn": 1 - proba}, details
 
 
-metrics = METADATA["test_metrics"]
-HEADER = f"""# Customer Churn Predictor
-Estimate the probability that a telecom customer will leave, from their account, services and demographics.
-
-**Model:** {METADATA["display_name"]} (scikit-learn pipeline) · **Hold-out ROC-AUC:** {metrics["roc_auc"]:.4f} ·
-**Recall:** {metrics["recall"]:.1%} · **Precision:** {metrics["precision"]:.1%} ·
-trained on {METADATA["n_train_rows"]:,} customers from the
-[Kaggle Playground S6E3](https://www.kaggle.com/competitions/playground-series-s6e3) dataset ·
-[Source code]({REPO_URL})
-"""
-
-with gr.Blocks(title="Customer Churn Predictor", theme=gr.themes.Soft()) as demo:
-    gr.Markdown(HEADER)
-    components = {}
-    with gr.Row():
-        with gr.Column(scale=3):
-            for section, rows in SECTIONS.items():
+def build_predict_tab():
+    inputs = {}
+    with gr.Row(elem_classes="preset-row"):
+        preset_buttons = {name: gr.Button(name, size="sm", variant="secondary") for name in EXAMPLE_CUSTOMERS}
+        reset_button = gr.Button("Reset", size="sm")
+    with gr.Row(equal_height=False):
+        with gr.Column(scale=7):
+            for section, rows in FORM_SECTIONS.items():
                 with gr.Group():
-                    gr.Markdown(f"#### {section}")
+                    gr.Markdown(f"**{section}**", elem_classes="section-title", padding=True)
                     for row in rows:
                         with gr.Row():
-                            for feature in row:
-                                components[feature] = make_input(feature)
-            button = gr.Button("Predict churn", variant="primary")
-        with gr.Column(scale=2):
-            probability = gr.Label(label="Churn probability", num_top_classes=2)
-            explanation = gr.Markdown()
+                            for field in row:
+                                inputs[field] = make_input(field, DEFAULT_CUSTOMER)
+        with gr.Column(scale=5, elem_classes="sticky-col"):
+            with gr.Group():
+                gauge = gr.HTML(padding=True)
+                verdict = gr.HTML(padding=True)
+            gr.Markdown("### Why this prediction")
+            driver_bars = gr.HTML()
+            gr.HTML('<div class="caption">Each bar is that input\'s contribution to this customer\'s risk score '
+                    '(SHAP values from the model, in log-odds). Hover a bar for details.</div>')
+    with gr.Row(equal_height=False):
+        with gr.Column():
+            gr.Markdown("### What would reduce the risk?")
+            scenarios = gr.HTML()
+            gr.HTML('<div class="caption">The model re-scores the customer with one change at a time, keeping the '
+                    'monthly bill the same (as if the change were offered for free).</div>')
+        with gr.Column():
+            gr.Markdown("### Risk outlook by tenure")
+            outlook_plot = gr.LinePlot(
+                x="tenure", y="churn_probability", color="series", color_map=OUTLOOK_COLORS,
+                x_title="Tenure (months)", y_title="Churn probability (%)", x_lim=[1, 72], y_lim=[0, 100], height=260,
+                tooltip=["tenure", "churn_probability", "series"], show_label=False,
+            )
+            outlook_note = gr.HTML()
 
-    inputs = [components[f] for f in RAW_FEATURES]
-    gr.Examples(
-        examples=[to_ui_values(c) for c in EXAMPLE_CUSTOMERS.values()],
-        example_labels=list(EXAMPLE_CUSTOMERS),
-        inputs=inputs,
-    )
-    button.click(predict, inputs=inputs, outputs=[probability, explanation], api_name="predict")
-    demo.load(predict, inputs=inputs, outputs=[probability, explanation], api_name=False)
+    ordered = [inputs[f] for f in RAW_FEATURES]
+    outputs = [gauge, verdict, driver_bars, scenarios, outlook_plot, outlook_note]
+
+    # Keep dependent options consistent (no add-ons without internet, no extra lines without phone).
+    addons = [inputs[f] for f in INTERNET_ADDONS]
+    inputs["InternetService"].change(
+        lambda internet, *current: [dependent_update(f, internet, c) for f, c in zip(INTERNET_ADDONS, current)],
+        [inputs["InternetService"], *addons], addons, api_name=False, show_progress="hidden")
+    inputs["PhoneService"].change(
+        lambda phone, current: dependent_update("MultipleLines", phone, current),
+        [inputs["PhoneService"], inputs["MultipleLines"]], inputs["MultipleLines"], api_name=False,
+        show_progress="hidden")
+
+    for name, button in preset_buttons.items():
+        button.click(lambda c=EXAMPLE_CUSTOMERS[name]: to_ui_values(c), None, ordered, api_name=False)
+    reset_button.click(lambda: to_ui_values(DEFAULT_CUSTOMER), None, ordered, api_name=False)
+
+    gr.on([c.change for c in ordered], analyse, ordered, outputs, trigger_mode="always_last",
+          show_progress="hidden", api_name=False)
+    return ordered, outputs
+
+
+# --- Batch scoring tab ---------------------------------------------------------------------------------
+MAX_BATCH_ROWS = 50_000  # keeps memory safe on the free 512 MB instance
+SAMPLE_CSV = ROOT / "app" / "assets" / "sample_customers.csv"
+TIER_HEX = {"Low": "#0ca30c", "Moderate": "#fab219", "High": "#ec835a", "Very high": "#d03b3b"}
+CONTEXT_COLUMNS = ["Contract", "tenure", "MonthlyCharges", "PaymentMethod", "InternetService"]
+TOP_TABLE_NAMES = {"id": "ID", "churn_probability": "Churn probability (%)", "risk_tier": "Risk tier",
+                   "Contract": "Contract", "tenure": "Tenure", "MonthlyCharges": "Monthly ($)"}
+
+
+def score_batch(file_path):
+    """Score an uploaded CSV: summary cards, tier distribution, top-risk table and a download."""
+    if not file_path:
+        return "", None, None, gr.update(visible=False)
+    started = time.perf_counter()
+    try:
+        df = load_raw(file_path)
+    except (ValueError, UnicodeDecodeError, pd.errors.ParserError) as err:
+        raise gr.Error(f"Could not read this file: {err}") from err
+    if df.empty:
+        raise gr.Error("The file has no customer rows.")
+    if len(df) > MAX_BATCH_ROWS:
+        raise gr.Error(f"Please upload at most {MAX_BATCH_ROWS:,} rows at a time (this file has {len(df):,}).")
+    unknown = unknown_categories(df)
+    if unknown:
+        gr.Warning("Some values were not seen in training and are scored as unknown: "
+                   + ", ".join(f"{col} ({n} rows)" for col, n in unknown.items()))
+
+    scored = pd.concat([score_frame(df, ART.pipeline, THRESHOLD), df[CONTEXT_COLUMNS].reset_index(drop=True)], axis=1)
+    out_path = Path(tempfile.mkdtemp()) / "churn_scores.csv"
+    scored.to_csv(out_path, index=False)
+    seconds = time.perf_counter() - started
+    log.info("Scored batch of %d customers in %.2fs", len(scored), seconds)
+
+    flagged = int(scored["will_churn"].sum())
+    summary = ui.kpi_cards_html([
+        ("Customers scored", f"{len(scored):,}", f"in {seconds * 1000:.0f} ms" if seconds < 1 else f"in {seconds:.1f} s"),
+        ("Flagged for retention", f"{flagged:,}", f"{flagged / len(scored):.1%} at the {ui.pct(THRESHOLD)} threshold"),
+        ("Expected churners", f"{scored['churn_probability'].sum():,.0f}", "sum of predicted probabilities"),
+        ("Average risk", ui.pct(scored["churn_probability"].mean()), f"vs {ui.pct(ART.churn_rate)} in training data"),
+    ])
+    tiers = (scored["risk_tier"].value_counts().reindex(RISK_TIERS, fill_value=0)
+             .rename_axis("risk_tier").reset_index(name="customers"))
+    top = scored.sort_values("churn_probability", ascending=False).head(25)
+    top = (top.assign(churn_probability=(top["churn_probability"].astype(float) * 100).round(1))
+           [[c for c in TOP_TABLE_NAMES if c in top]].rename(columns=TOP_TABLE_NAMES))
+    return summary, tiers, top, gr.update(value=str(out_path), visible=True)
+
+
+def build_batch_tab():
+    gr.Markdown("Score a whole customer list at once. Upload a CSV with the 19 input columns, in the same format "
+                "as the Kaggle data. An `id` column is kept if present. Up to 50,000 rows per file.")
+    with gr.Row(equal_height=False):
+        with gr.Column(scale=3):
+            upload = gr.File(label="Customer CSV", file_types=[".csv"], type="filepath", height=150)
+        with gr.Column(scale=2):
+            sample_button = gr.Button("Try it with 40 sample customers", variant="primary")
+            gr.DownloadButton("Download the sample CSV", value=str(SAMPLE_CSV), variant="secondary")
+            gr.HTML('<div class="caption">Columns: gender, SeniorCitizen, Partner, Dependents, tenure, PhoneService, '
+                    'MultipleLines, InternetService, OnlineSecurity, OnlineBackup, DeviceProtection, TechSupport, '
+                    'StreamingTV, StreamingMovies, Contract, PaperlessBilling, PaymentMethod, MonthlyCharges, '
+                    'TotalCharges. See the sample file for valid values.</div>')
+    summary = gr.HTML()
+    with gr.Row(equal_height=False):
+        with gr.Column(scale=2):
+            tier_plot = gr.BarPlot(
+                x="risk_tier", y="customers", color="risk_tier", color_map=TIER_HEX, sort=RISK_TIERS,
+                x_title="Risk tier", y_title="Customers", height=300, show_label=False,
+                tooltip=["risk_tier", "customers"],
+            )
+        with gr.Column(scale=3):
+            top_table = gr.Dataframe(label="Highest-risk customers (top 25)", interactive=False, wrap=False)
+    download = gr.DownloadButton("Download all scores (CSV)", visible=False, variant="primary")
+
+    outputs = [summary, tier_plot, top_table, download]
+    upload.upload(score_batch, upload, outputs, api_name=False)
+    upload.clear(lambda: score_batch(None), None, outputs, api_name=False)
+    sample_button.click(lambda: score_batch(str(SAMPLE_CSV)), None, outputs, api_name=False)
+
+
+# --- App ---------------------------------------------------------------------------------------------
+with gr.Blocks(title="Customer Churn Predictor", theme=THEME, css=CSS) as demo:
+    gr.HTML(ui.header_html(ART.metadata))
+    with gr.Tabs():
+        with gr.Tab("Predict"):
+            predict_inputs, predict_outputs = build_predict_tab()
+        with gr.Tab("Batch scoring"):
+            build_batch_tab()
+    demo.load(analyse, predict_inputs, predict_outputs, api_name=False, show_progress="hidden")
 
 if __name__ == "__main__":
     demo.launch()

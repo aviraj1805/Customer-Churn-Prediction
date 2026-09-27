@@ -13,7 +13,9 @@ from src.predict import (
     load_model,
     predict_customer,
     prepare_customer,
+    risk_tier,
     score_file,
+    unknown_categories,
     write_submission,
 )
 from tests.conftest import make_raw_frame
@@ -112,3 +114,26 @@ def test_saved_production_model_scores_examples():
               for name, c in EXAMPLE_CUSTOMERS.items()}
     assert probas["New fiber customer, month-to-month, electronic check"] > 0.5
     assert probas["Long-standing DSL customer, two-year contract"] < 0.1
+
+
+@pytest.mark.parametrize("proba, tier", [
+    (0.0, "Low"), (0.199, "Low"), (0.2, "Moderate"), (0.399, "Moderate"),
+    (0.4, "High"), (0.699, "High"), (0.7, "Very high"), (1.0, "Very high"),
+])
+def test_risk_tiers_are_anchored_on_the_threshold(proba, tier):
+    assert risk_tier(proba, threshold=0.4) == tier
+
+
+def test_only_high_tiers_are_flagged(saved_model):
+    pipeline, _ = load_model(*saved_model)
+    for customer in EXAMPLE_CUSTOMERS.values():
+        result = predict_customer(customer, pipeline, 0.4)
+        assert result["will_churn"] == (result["risk_tier"] in ("High", "Very high"))
+
+
+def test_unknown_categories_are_counted_per_column():
+    df = make_raw_frame(n_rows=20, seed=5, with_target=False)
+    df.loc[:2, "Contract"] = "Weekly"
+    df.loc[0, "PaymentMethod"] = "Crypto"
+    assert unknown_categories(df) == {"Contract": 3, "PaymentMethod": 1}
+    assert unknown_categories(make_raw_frame(n_rows=20, seed=5, with_target=False)) == {}

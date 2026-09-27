@@ -91,20 +91,53 @@ def prepare_customer(customer: dict) -> pd.DataFrame:
     return pd.DataFrame([row], columns=RAW_FEATURES)
 
 
+RISK_TIERS = ["Low", "Moderate", "High", "Very high"]
+
+
+def risk_tier(proba: float, threshold: float) -> str:
+    """Four risk bands anchored on the decision threshold t.
+
+    Low < t/2 <= Moderate < t <= High < (t + 1)/2 <= Very high. Only High and Very high are flagged.
+    """
+    if proba < threshold / 2:
+        return "Low"
+    if proba < threshold:
+        return "Moderate"
+    if proba < (threshold + 1) / 2:
+        return "High"
+    return "Very high"
+
+
 def predict_customer(customer: dict, pipeline: Pipeline, threshold: float) -> dict:
-    """Churn probability for one customer, plus the yes/no call at the model's decision threshold."""
+    """Churn probability for one customer, the yes/no call at the decision threshold, and the risk tier."""
     proba = float(pipeline.predict_proba(prepare_customer(customer))[0, 1])
-    return {"churn_probability": proba, "will_churn": proba >= threshold, "threshold": threshold}
+    return {"churn_probability": proba, "will_churn": proba >= threshold, "threshold": threshold,
+            "risk_tier": risk_tier(proba, threshold)}
+
+
+def unknown_categories(df: pd.DataFrame) -> dict[str, int]:
+    """Rows per categorical column whose value the model never saw (they are scored as 'none of the known levels')."""
+    counts = {col: int((~df[col].astype(str).isin(levels)).sum()) for col, levels in CATEGORY_LEVELS.items()}
+    return {col: n for col, n in counts.items() if n}
+
+
+def score_frame(df: pd.DataFrame, pipeline: Pipeline, threshold: float, id_column: str = "id") -> pd.DataFrame:
+    """Score a raw customer table; keeps the id column when present."""
+    proba = pipeline.predict_proba(df[RAW_FEATURES])[:, 1]
+    scored = pd.DataFrame({
+        "churn_probability": proba,
+        "will_churn": (proba >= threshold).astype(int),
+        "risk_tier": [risk_tier(p, threshold) for p in proba],
+    })
+    if id_column in df:
+        scored.insert(0, id_column, df[id_column].to_numpy())
+    return scored
 
 
 def score_file(input_path: Path, output_path: Path, pipeline: Pipeline, threshold: float,
                id_column: str = "id") -> pd.DataFrame:
-    """Score every row of a raw CSV; keeps the id column when present."""
-    df = load_raw(input_path)
-    proba = pipeline.predict_proba(df[RAW_FEATURES])[:, 1]
-    scored = pd.DataFrame({"churn_probability": proba, "will_churn": (proba >= threshold).astype(int)})
-    if id_column in df:
-        scored.insert(0, id_column, df[id_column].to_numpy())
+    """Score every row of a raw CSV and write the result."""
+    scored = score_frame(load_raw(input_path), pipeline, threshold, id_column)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     scored.to_csv(output_path, index=False)
     return scored
