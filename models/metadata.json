@@ -1,0 +1,50 @@
+{
+  "model_name": "xgboost",
+  "display_name": "XGBoost (tuned)",
+  "best_params": {
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "n_estimators": 600,
+    "scale_pos_weight": 1.0
+  },
+  "threshold": 0.36248672008514404,
+  "cv_roc_auc_mean": 0.9141392254264,
+  "cv_roc_auc_std": 0.001231087009451808,
+  "test_metrics": {
+    "roc_auc": 0.916501644934937,
+    "pr_auc": 0.7551794756596195,
+    "accuracy": 0.8504278898341454,
+    "precision": 0.6374480058722779,
+    "recall": 0.7787617232746703,
+    "f1": 0.701054508148472
+  },
+  "n_train_rows": 475355,
+  "n_test_rows": 118839,
+  "features": [
+    "SeniorCitizen",
+    "tenure",
+    "MonthlyCharges",
+    "TotalCharges",
+    "gender",
+    "Partner",
+    "Dependents",
+    "PhoneService",
+    "MultipleLines",
+    "InternetService",
+    "OnlineSecurity",
+    "OnlineBackup",
+    "DeviceProtection",
+    "TechSupport",
+    "StreamingTV",
+    "StreamingMovies",
+    "Contract",
+    "PaperlessBilling",
+    "PaymentMethod"
+  ],
+  "engineered_features": true,
+  "trained_at": "2026-09-27T07:21:03+00:00",
+  "library_versions": {
+    "scikit-learn": "1.7.1",
+    "xgboost": "3.2.0"
+  }
+}
