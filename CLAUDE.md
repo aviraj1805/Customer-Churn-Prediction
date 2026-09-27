@@ -47,7 +47,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 6: evaluation + full training run (best: tuned XGBoost, test AUC 0.9165; reruns reproduce exactly)
 - [x] Task 7: predict module + tests
 - [x] Task 8: cleaned EDA notebook (executed with outputs; figures in reports/figures/eda_*.png)
-- [ ] Task 9: Gradio app
+- [x] Task 9: Gradio app (app/app.py; screenshot in reports/figures/app_screenshot.png)
 - [ ] Task 10: deploy to Hugging Face Spaces
 - [ ] Task 11: README + docs
 - [ ] Task 12: final verification, merge to main, push
