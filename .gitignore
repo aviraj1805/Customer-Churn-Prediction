@@ -1,0 +1,34 @@
+# Environments
+.venv/
+venv/
+env/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Data: download from Kaggle (see data/README.md)
+data/raw/*
+!data/raw/.gitkeep
+
+# Models: only the final deployed artifact is tracked
+models/*
+!models/.gitkeep
+!models/best_model.joblib
+!models/metadata.json
+
+# Deployment staging
+.space_build/
+
+# Claude Code local overrides
+.claude/settings.local.json
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
