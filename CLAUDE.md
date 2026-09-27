@@ -42,7 +42,7 @@ tests/               pytest suite (uses synthetic data, no Kaggle download neede
 - [x] Task 2: data module + tests
 - [x] Task 3: features + preprocessing pipeline + tests (parity 0.91582 vs notebook 0.91574; engineered features on)
 - [x] Task 4: model registry + grids
-- [ ] Task 5: training entry point
+- [x] Task 5: training entry point (`--quick` writes to .quick_run/, ~3 min)
 - [ ] Task 6: evaluation + full training run
 - [ ] Task 7: predict module + tests
 - [ ] Task 8: cleaned EDA notebook
